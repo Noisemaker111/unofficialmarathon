@@ -1,0 +1,3 @@
+{
+  "extends": "@unofficialmarathon/config/tsconfig.base.json"
+}
