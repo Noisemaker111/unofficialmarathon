@@ -1,0 +1,346 @@
+// Weapon data extracted from gameplay.md
+// Source: https://www.marathonwiki.com/
+
+export type WeaponCategory = "pistol" | "rifle" | "heavy" | "energy" | "thrown" | "melee";
+export type GameTitle = "marathon" | "marathon2" | "infinity";
+
+export interface Weapon {
+  id: string;
+  name: string;
+  game: GameTitle[];
+  category: WeaponCategory;
+  type: string;
+  ammo: string;
+  capacity: string;
+  fireRate: string;
+  damage: string;
+  range: string;
+  vacuumCapable: boolean;
+  dualWieldable: boolean;
+  primaryFire: string;
+  secondaryFire: string | null;
+  description: string;
+  specialProperties: string[];
+  source: string;
+}
+
+export const weapons: Weapon[] = [
+  {
+    id: "magnum-mega-class",
+    name: ".45 Magnum Mega Class",
+    game: ["marathon"],
+    category: "pistol",
+    type: "Semi-automatic pistol",
+    ammo: ".45 caliber high velocity, vacuum-enabled teflon rounds",
+    capacity: "8 rounds",
+    fireRate: "Semi-automatic",
+    damage: "~15-20 per round",
+    range: "Long",
+    vacuumCapable: true,
+    dualWieldable: true,
+    primaryFire: "Semi-automatic pistol shots",
+    secondaryFire: null,
+    description:
+      "The Magnum serves as the player's starting weapon and workhorse. It is by far the most accurate weapon in the game and allows the player to engage targets at range. Though not as effective at close quarters as the assault rifle, the Magnum excels at picking off enemies from a distance.",
+    specialProperties: [
+      "Most accurate weapon in the game",
+      "Dual-wieldable with another Magnum",
+      "Vacuum-enabled (works in space)",
+      "Starting weapon",
+    ],
+    source: "https://www.marathonwiki.com/.45_Magnum_Mega_Class",
+  },
+  {
+    id: "m75-assault-rifle",
+    name: "M75 Assault Rifle",
+    game: ["marathon"],
+    category: "rifle",
+    type: "Fully automatic assault rifle with under-barrel grenade launcher",
+    ammo: ".75 caliber rounds",
+    capacity: "52 rounds (magazine)",
+    fireRate: "600 RPM",
+    damage: "~10-15 per round",
+    range: "Short-Medium",
+    vacuumCapable: false,
+    dualWieldable: false,
+    primaryFire: "Fully automatic rifle fire",
+    secondaryFire: "Under-barrel grenade launcher (7 grenades)",
+    description:
+      "The M75 is the player's main workhorse in the claustrophobic halls aboard the UESC Marathon. Capable of chewing through BOBs and Pfhor fighters with minimal effort with its primary fire, or blowing away crowds with its grenade launcher. The weapon's low accuracy is actually a design feature — not a bug.",
+    specialProperties: [
+      "Grenade jumping: Explosion propulsion for extra height",
+      "Recoil flying: Can fly through air after initial boost",
+      "Grenade launcher for area damage",
+    ],
+    source: "https://www.marathonwiki.com/M75_Assault_Rifle",
+  },
+  {
+    id: "fusion-pistol",
+    name: "Tech .50 Fusion Pistol",
+    game: ["marathon", "marathon2", "infinity"],
+    category: "energy",
+    type: "Semi-automatic energy projection weapon",
+    ammo: "High Energy Bolts",
+    capacity: "20 standard bolts / 4 charged bolts",
+    fireRate: "Semi-auto / Charged",
+    damage: "5.83 TW (standard) / 17.5 TW (charged)",
+    range: "Medium",
+    vacuumCapable: true,
+    dualWieldable: false,
+    primaryFire: "Standard high-energy bolts",
+    secondaryFire: "Overcharge (large 17.5 TW bolt)",
+    description:
+      "The weapon of choice for elite soldiers aboard the UESC Marathon. In Marathon 1, it does NOT deal bonus damage against mechanical enemies — this was only implemented in sequels.",
+    specialProperties: [
+      "Overcharge works at any battery level",
+      "Vacuum-enabled",
+      "Bonus damage vs. cyborgs (Marathon 2+ only)",
+      "Kills by fusion bolts can explode for area damage",
+    ],
+    source: "https://www.marathonwiki.com/Tech_.50_Fusion_Pistol",
+  },
+  {
+    id: "flame-unit",
+    name: "Tozt.25 Flame Unit",
+    game: ["marathon"],
+    category: "energy",
+    type: "Flame dispenser",
+    ammo: "Napalm-75",
+    capacity: "7 seconds continuous",
+    fireRate: "Continuous",
+    damage: "Flame stream",
+    range: "20 ft",
+    vacuumCapable: false,
+    dualWieldable: false,
+    primaryFire: "Continuous flame spray",
+    secondaryFire: null,
+    description:
+      "Best reserved for tight engagement ranges aboard the UESC Marathon. Due to low gravity aboard Pfhor ships, the flamethrower can be used to fly through the air. Excels at chewing unarmored flesh targets.",
+    specialProperties: [
+      "Effective against unarmored flesh targets",
+      "Propulsion in low-gravity: Can be used to fly through the air",
+      "Napalm sticks to surfaces",
+    ],
+    source: "https://www.marathonwiki.com/Tozt.25_Flame_Unit",
+  },
+  {
+    id: "spnkr-x17",
+    name: "SPNKR-x17 Surface-Surface Missile Launcher",
+    game: ["marathon"],
+    category: "heavy",
+    type: "Shoulder-mounted rocket launcher",
+    ammo: "Short range surface-to-surface high-explosive mini-rockets",
+    capacity: "2 rockets (hand-fed)",
+    fireRate: "Semi-automatic",
+    damage: "High explosive, 10m blast radius",
+    range: "2500 meters effective",
+    vacuumCapable: false,
+    dualWieldable: false,
+    primaryFire: "Semi-automatic rocket fire",
+    secondaryFire: null,
+    description:
+      "One of the last weapons obtained, and the most powerful conventional weapon used by the Security Officer. Each tube holds one rocket, and rockets travel at 110 m/s with a 10-meter blast radius.",
+    specialProperties: ["Dual-tube launcher", "High explosive area damage", "Self-propelled rockets"],
+    source: "https://www.marathonwiki.com/SPNKR-x17_Surface-Surface_Missile_Launcher",
+  },
+  {
+    id: "alien-weapon",
+    name: "Alien Weapon",
+    game: ["marathon"],
+    category: "energy",
+    type: "Fully automatic alien rifle",
+    ammo: "Explosive rounds (alien)",
+    capacity: "Non-reloadable",
+    fireRate: "Fully automatic",
+    damage: "High",
+    range: "Medium (horizontal spread only)",
+    vacuumCapable: false,
+    dualWieldable: false,
+    primaryFire: "Automatic explosive rounds",
+    secondaryFire: null,
+    description:
+      "The mainstay weapon of Pfhor Enforcers. Cannot be reloaded — when empty, the weapon drops from inventory. If an Enforcer is killed with the flamethrower, they will NOT drop this weapon.",
+    specialProperties: [
+      "Cannot be reloaded — find new ones from killed Enforcers",
+      "More accurate than M75 (only spreads on horizontal axis)",
+      "Displayed as UNKNOWN WEAPON CLASS with system error 0xfded",
+    ],
+    source: "https://www.marathonwiki.com/Alien_Weapon",
+  },
+  {
+    id: "magnum-mega-class-a1",
+    name: ".44 Magnum Mega Class A1",
+    game: ["marathon2"],
+    category: "pistol",
+    type: "Semi-automatic pistol (improved variant)",
+    ammo: ".44 caliber high velocity rounds",
+    capacity: "8 rounds",
+    fireRate: "Semi-automatic",
+    damage: "High-damage pistol shots",
+    range: "Long",
+    vacuumCapable: true,
+    dualWieldable: true,
+    primaryFire: "High-damage pistol shots",
+    secondaryFire: null,
+    description:
+      "Based on the .45 MMC but improved by Durandal's S'pht allies. Dual-wieldable and vacuum-enabled.",
+    specialProperties: [
+      "Improved variant of the .45 Magnum",
+      "Dual-wieldable",
+      "Vacuum-enabled",
+    ],
+    source: "https://www.marathonwiki.com/.45_Magnum_Mega_Class",
+  },
+  {
+    id: "zeus-class-fusion-pistol",
+    name: "Zeus-Class Fusion Pistol",
+    game: ["marathon2", "infinity"],
+    category: "energy",
+    type: "Directed energy weapon (improved fusion pistol)",
+    ammo: "High-energy bolts",
+    capacity: "20 standard bolts / 4 charged bolts",
+    fireRate: "Semi-auto / Charged",
+    damage: "~5-6 TW (standard) / ~17.5 TW (charged)",
+    range: "Medium",
+    vacuumCapable: true,
+    dualWieldable: false,
+    primaryFire: "Standard energy bolts",
+    secondaryFire: "Overcharge blast",
+    description:
+      "One of the main counters to cybernetic Pfhor enemies. Deals increased damage against all cybernetic enemies. The explosion on kill can chain-react with groups.",
+    specialProperties: [
+      "Bonus damage vs. ALL Pfhor machinery",
+      "Kills can cause explosions that damage nearby enemies",
+      "Cannot fire underwater (short-circuits, damages player)",
+    ],
+    source: "https://www.marathonwiki.com/Zeus-Class_Fusion_pistol",
+  },
+  {
+    id: "ma-75b-battle-rifle",
+    name: "MA-75B Battle Rifle",
+    game: ["marathon2", "infinity"],
+    category: "rifle",
+    type: "Fully automatic battle rifle with under-barrel grenade launcher",
+    ammo: ".75 caliber rounds",
+    capacity: "52 rounds",
+    fireRate: "High (improved over M75)",
+    damage: "~10-15 per round",
+    range: "Medium",
+    vacuumCapable: false,
+    dualWieldable: false,
+    primaryFire: "Automatic rifle fire (improved accuracy and recoil over M75)",
+    secondaryFire: "Under-barrel grenade launcher (7 grenades)",
+    description:
+      "Durandal called the M75 'a ridiculous toy designed to impress aging pompous generals.' The MA-75B was meant to address the lacking accuracy and recoil. Functions the same in gameplay as its predecessor.",
+    specialProperties: [
+      "Longer barrel than M75",
+      "More manageable recoil",
+      "Grenade jumping and recoil flying still possible",
+    ],
+    source: "https://www.marathonwiki.com/MA-75B_Battle_Rifle",
+  },
+  {
+    id: "tozt-7-backpack-napalm",
+    name: "TOZT-7 Backpack Napalm Unit",
+    game: ["marathon2", "infinity"],
+    category: "energy",
+    type: "Backpack-mounted flamethrower",
+    ammo: "Napalm-75",
+    capacity: "Extended duration",
+    fireRate: "Continuous",
+    damage: "Extended-range flame stream",
+    range: "Extended range over Tozt.25",
+    vacuumCapable: false,
+    dualWieldable: false,
+    primaryFire: "Extended-range flame stream",
+    secondaryFire: null,
+    description: "Backpack-mounted for extended use. Improved range over the Tozt.25. Propulsion capability in low-gravity.",
+    specialProperties: [
+      "Backpack-mounted for extended use",
+      "Improved range over Tozt.25",
+      "Propulsion capability in low-gravity",
+    ],
+    source: "",
+  },
+  {
+    id: "wste-m5-shotgun",
+    name: "WSTE-M5 Combat Shotgun",
+    game: ["marathon2", "infinity"],
+    category: "rifle",
+    type: "Pump-action combat shotgun",
+    ammo: "Shotgun shells",
+    capacity: "8 shells",
+    fireRate: "Pump-action",
+    damage: "Close-quarters devastation",
+    range: "Short",
+    vacuumCapable: false,
+    dualWieldable: false,
+    primaryFire: "Wide-spread shotgun blast",
+    secondaryFire: null,
+    description: "Close-quarters devastation. Pump-action — must cycle between shots.",
+    specialProperties: ["Close-quarters devastation", "Pump-action between shots"],
+    source: "",
+  },
+  {
+    id: "spnkr-xp",
+    name: "SPNKR-XP Surface-Surface Missile Launcher",
+    game: ["marathon2", "infinity"],
+    category: "heavy",
+    type: "Improved rocket launcher",
+    ammo: "High-explosive mini-rockets",
+    capacity: "2 tubes",
+    fireRate: "Semi-automatic",
+    damage: "Improved velocity and blast radius over SPNKR-x17",
+    range: "Extended",
+    vacuumCapable: false,
+    dualWieldable: false,
+    primaryFire: "Semi-automatic rockets",
+    secondaryFire: null,
+    description: "Improved velocity and blast radius over the SPNKR-x17. Dual-tube design retained.",
+    specialProperties: ["Improved over SPNKR-x17", "Dual-tube design retained"],
+    source: "",
+  },
+  {
+    id: "kkv-7-smg",
+    name: "KKV-7 10mm SMG Flechette",
+    game: ["infinity"],
+    category: "rifle",
+    type: "Submachine gun",
+    ammo: "10mm rounds / Flechettes",
+    capacity: "Unknown",
+    fireRate: "High-rate SMG fire",
+    damage: "SMG / Armor-piercing flechette",
+    range: "Short-Medium",
+    vacuumCapable: false,
+    dualWieldable: false,
+    primaryFire: "High-rate SMG fire",
+    secondaryFire: "Flechette rounds (armor-piercing)",
+    description: "First SMG-type weapon in the trilogy. Fires both standard rounds and flechettes.",
+    specialProperties: ["First SMG-type weapon in the trilogy", "Fires both standard rounds and flechettes"],
+    source: "",
+  },
+];
+
+export const weaponCategories: { value: WeaponCategory; label: string }[] = [
+  { value: "pistol", label: "Pistols" },
+  { value: "rifle", label: "Rifles" },
+  { value: "heavy", label: "Heavy" },
+  { value: "energy", label: "Energy" },
+  { value: "thrown", label: "Thrown" },
+  { value: "melee", label: "Melee" },
+];
+
+export const gameTitles: { value: GameTitle; label: string }[] = [
+  { value: "marathon", label: "Marathon" },
+  { value: "marathon2", label: "Marathon 2: Durandal" },
+  { value: "infinity", label: "Marathon Infinity" },
+];
+
+export const weaponEffectivenessByEnemy: Record<string, Record<string, string>> = {
+  Magnum: { Pfhor: "++", S_pht: "+", Cyborg: "+", Hunter: "+", Juggernaut: "-" },
+  "Assault Rifle": { Pfhor: "+++", S_pht: "++", Cyborg: "-", Hunter: "-", Juggernaut: "--" },
+  "Fusion Pistol": { Pfhor: "++", S_pht: "+++", Cyborg: "+++", Hunter: "+++", Juggernaut: "++" },
+  Flamethrower: { Pfhor: "+++", S_pht: "--", Cyborg: "-", Hunter: "Immune", Juggernaut: "-" },
+  Rockets: { Pfhor: "++", S_pht: "++", Cyborg: "+", Hunter: "+++", Juggernaut: "+++" },
+  "Alien Weapon": { Pfhor: "++", S_pht: "++", Cyborg: "+", Hunter: "+", Juggernaut: "+" },
+};
