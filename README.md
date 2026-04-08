@@ -1,86 +1,75 @@
 # unofficialmarathon
 
-This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines React, TanStack Router, Convex, and more.
+Unofficial Marathon is a community fan site for Bungie's Marathon (2026), built as a Bun/Turborepo monorepo with a React + Vite frontend and a Convex backend.
 
-## Features
+## Stack
 
-- **TypeScript** - For type safety and improved developer experience
-- **TanStack Router** - File-based routing with full type safety
-- **TailwindCSS** - Utility-first CSS for rapid UI development
-- **Shared UI package** - shadcn/ui primitives live in `packages/ui`
-- **Convex** - Reactive backend-as-a-service platform
-- **Turborepo** - Optimized monorepo build system
+- React 19
+- TanStack Router
+- Tailwind CSS v4
+- shadcn/ui in `packages/ui`
+- Convex in `packages/backend`
+- Bun workspaces + Turborepo
 
-## Getting Started
+## Local Development
 
-First, install the dependencies:
+Install dependencies:
 
 ```bash
 bun install
 ```
 
-## Convex Setup
-
-This project uses Convex as a backend. You'll need to set up Convex before running the app:
+Configure a development Convex deployment:
 
 ```bash
 bun run dev:setup
 ```
 
-Follow the prompts to create a new Convex project and connect it to your application.
+Set the frontend env in `apps/web/.env`:
 
-Copy environment variables from `packages/backend/.env.local` to `apps/*/.env`.
+```bash
+VITE_CONVEX_URL=https://your-dev-deployment.convex.cloud
+```
 
-Then, run the development server:
+Run the app:
 
 ```bash
 bun run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser to see the web application.
-Your app will connect to the Convex cloud backend automatically.
+## Production Deployment
 
-## UI Customization
+### Convex
 
-React web apps in this stack share shadcn/ui primitives through `packages/ui`.
-
-- Change design tokens and global styles in `packages/ui/src/styles/globals.css`
-- Update shared primitives in `packages/ui/src/components/*`
-- Adjust shadcn aliases or style config in `packages/ui/components.json` and `apps/web/components.json`
-
-### Add more shared components
-
-Run this from the project root to add more primitives to the shared UI package:
+Create or select the production deployment, then deploy the backend from the repo root:
 
 ```bash
-npx shadcn@latest add accordion dialog popover sheet table -c packages/ui
+npx convex deploy
 ```
 
-Import shared components like this:
+Copy the production URL into Vercel as:
 
-```tsx
-import { Button } from "@unofficialmarathon/ui/components/button";
+```bash
+VITE_CONVEX_URL=https://your-production-deployment.convex.cloud
 ```
 
-### Add app-specific blocks
+### Vercel
 
-If you want to add app-specific blocks instead of shared primitives, run the shadcn CLI from `apps/web`.
+This repo includes a root `vercel.json` configured for the monorepo:
 
-## Project Structure
+- install command: `bun install`
+- build command: `bun run build:web`
+- output directory: `apps/web/dist`
+- SPA rewrite to `index.html` for TanStack Router client routes
 
-```
-unofficialmarathon/
-├── apps/
-│   ├── web/         # Frontend application (React + TanStack Router)
-├── packages/
-│   ├── ui/          # Shared shadcn/ui components and styles
-│   ├── backend/     # Convex backend functions and schema
-```
+After importing the GitHub repo into Vercel, set `VITE_CONVEX_URL` in the Vercel project environment variables and deploy.
 
-## Available Scripts
+## Scripts
 
-- `bun run dev`: Start all applications in development mode
-- `bun run build`: Build all applications
-- `bun run dev:web`: Start only the web application
-- `bun run dev:setup`: Setup and configure your Convex project
-- `bun run check-types`: Check TypeScript types across all apps
+- `bun run dev`
+- `bun run build`
+- `bun run build:web`
+- `bun run check-types`
+- `bun run dev:web`
+- `bun run dev:server`
+- `bun run dev:setup`
