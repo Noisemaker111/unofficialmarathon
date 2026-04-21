@@ -6,6 +6,16 @@ const INITIAL_RETRY_DELAY_MS = 4000;
 const backendCwd = new URL("../packages/backend/", import.meta.url);
 const verbose = process.argv.includes("--verbose");
 
+// Check for required env vars
+if (!process.env.CONVEX_DEPLOY_KEY) {
+  console.error("ERROR: CONVEX_DEPLOY_KEY environment variable is not set");
+  console.error("Please set it in your Vercel project settings");
+  process.exit(1);
+}
+
+console.log("Starting Vercel build with Convex deployment...");
+console.log(`Backend directory: ${backendCwd.pathname}`);
+
 function run(command, args, { cwd, env } = {}) {
   return new Promise((resolve) => {
     const child = spawn(command, args, {
@@ -19,7 +29,8 @@ function run(command, args, { cwd, env } = {}) {
       resolve({ code: code ?? 1, signal });
     });
 
-    child.on("error", () => {
+    child.on("error", (err) => {
+      console.error(`Spawn error: ${err.message}`);
       resolve({ code: 1 });
     });
   });
@@ -51,11 +62,14 @@ async function runWithRetry(command, args, options = {}) {
   return 1;
 }
 
+console.log("\n=== Step 1: Convex Codegen ===");
 const codegenResult = await run("bunx", ["convex", "codegen"], { cwd: backendCwd });
 if (codegenResult.code !== 0) {
+  console.error("Codegen failed");
   process.exit(codegenResult.code);
 }
 
+console.log("\n=== Step 2: Convex Deploy + Web Build ===");
 const deployArgs = [
   "convex",
   "deploy",
@@ -70,4 +84,7 @@ if (verbose) {
 }
 
 const deployExitCode = await runWithRetry("bunx", deployArgs, { cwd: backendCwd });
+if (deployExitCode !== 0) {
+  console.error("Deploy failed");
+}
 process.exit(deployExitCode);
