@@ -23,8 +23,10 @@
   "type": "module",
   "scripts": {
     "dev": "turbo dev",
-    "build": "turbo build",
+    "build": "turbo build && npx convex deploy",
     "build:web": "turbo build --filter=web",
+    "build:vercel": "bun scripts/vercel-build.mjs",
+    "build:vercel:verbose": "bun scripts/vercel-build.mjs --verbose",
     "check-types": "turbo check-types",
     "dev:web": "turbo -F web dev",
     "dev:server": "turbo -F @unofficialmarathon/backend dev",
