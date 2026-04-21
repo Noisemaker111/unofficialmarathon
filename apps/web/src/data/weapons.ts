@@ -1,346 +1,89 @@
-// Weapon data extracted from gameplay.md
-// Source: https://www.marathonwiki.com/
+// Weapon data for the 2026 Marathon extraction shooter
+// Source: https://marathonthegame.fandom.com/wiki/Weapons
 
-export type WeaponCategory = "pistol" | "rifle" | "heavy" | "energy" | "thrown" | "melee";
-export type GameTitle = "marathon" | "marathon2" | "infinity";
+export type WeaponCategory =
+  | "assault_rifle"
+  | "machine_gun"
+  | "precision_rifle"
+  | "pistol"
+  | "railgun"
+  | "shotgun"
+  | "sniper_rifle"
+  | "smg";
+
+export type AmmoType = "Light Rounds" | "Heavy Rounds" | "MIPS Rounds" | "Volt Battery" | "Volt Cells";
 
 export interface Weapon {
   id: string;
   name: string;
-  game: GameTitle[];
   category: WeaponCategory;
-  type: string;
-  ammo: string;
-  capacity: string;
-  fireRate: string;
-  damage: string;
-  range: string;
-  vacuumCapable: boolean;
-  dualWieldable: boolean;
-  primaryFire: string;
-  secondaryFire: string | null;
   description: string;
-  specialProperties: string[];
-  source: string;
+  firepower: string;
+  accuracy: string;
+  handling: string;
+  range: string;
+  magazine: string;
+  zoom: string;
+  ammoType: AmmoType;
+  special?: string;
+  imageUrl: string;
+  wikiUrl: string;
 }
 
-export const weapons: Weapon[] = [
-  {
-    id: "magnum-mega-class",
-    name: ".45 Magnum Mega Class",
-    game: ["marathon"],
-    category: "pistol",
-    type: "Semi-automatic pistol",
-    ammo: ".45 caliber high velocity, vacuum-enabled teflon rounds",
-    capacity: "8 rounds",
-    fireRate: "Semi-automatic",
-    damage: "~15-20 per round",
-    range: "Long",
-    vacuumCapable: true,
-    dualWieldable: true,
-    primaryFire: "Semi-automatic pistol shots",
-    secondaryFire: null,
-    description:
-      "The Magnum serves as the player's starting weapon and workhorse. It is by far the most accurate weapon in the game and allows the player to engage targets at range. Though not as effective at close quarters as the assault rifle, the Magnum excels at picking off enemies from a distance.",
-    specialProperties: [
-      "Most accurate weapon in the game",
-      "Dual-wieldable with another Magnum",
-      "Vacuum-enabled (works in space)",
-      "Starting weapon",
-    ],
-    source: "https://www.marathonwiki.com/.45_Magnum_Mega_Class",
-  },
-  {
-    id: "m75-assault-rifle",
-    name: "M75 Assault Rifle",
-    game: ["marathon"],
-    category: "rifle",
-    type: "Fully automatic assault rifle with under-barrel grenade launcher",
-    ammo: ".75 caliber rounds",
-    capacity: "52 rounds (magazine)",
-    fireRate: "600 RPM",
-    damage: "~10-15 per round",
-    range: "Short-Medium",
-    vacuumCapable: false,
-    dualWieldable: false,
-    primaryFire: "Fully automatic rifle fire",
-    secondaryFire: "Under-barrel grenade launcher (7 grenades)",
-    description:
-      "The M75 is the player's main workhorse in the claustrophobic halls aboard the UESC Marathon. Capable of chewing through BOBs and Pfhor fighters with minimal effort with its primary fire, or blowing away crowds with its grenade launcher. The weapon's low accuracy is actually a design feature — not a bug.",
-    specialProperties: [
-      "Grenade jumping: Explosion propulsion for extra height",
-      "Recoil flying: Can fly through air after initial boost",
-      "Grenade launcher for area damage",
-    ],
-    source: "https://www.marathonwiki.com/M75_Assault_Rifle",
-  },
-  {
-    id: "fusion-pistol",
-    name: "Tech .50 Fusion Pistol",
-    game: ["marathon", "marathon2", "infinity"],
-    category: "energy",
-    type: "Semi-automatic energy projection weapon",
-    ammo: "High Energy Bolts",
-    capacity: "20 standard bolts / 4 charged bolts",
-    fireRate: "Semi-auto / Charged",
-    damage: "5.83 TW (standard) / 17.5 TW (charged)",
-    range: "Medium",
-    vacuumCapable: true,
-    dualWieldable: false,
-    primaryFire: "Standard high-energy bolts",
-    secondaryFire: "Overcharge (large 17.5 TW bolt)",
-    description:
-      "The weapon of choice for elite soldiers aboard the UESC Marathon. In Marathon 1, it does NOT deal bonus damage against mechanical enemies — this was only implemented in sequels.",
-    specialProperties: [
-      "Overcharge works at any battery level",
-      "Vacuum-enabled",
-      "Bonus damage vs. cyborgs (Marathon 2+ only)",
-      "Kills by fusion bolts can explode for area damage",
-    ],
-    source: "https://www.marathonwiki.com/Tech_.50_Fusion_Pistol",
-  },
-  {
-    id: "flame-unit",
-    name: "Tozt.25 Flame Unit",
-    game: ["marathon"],
-    category: "energy",
-    type: "Flame dispenser",
-    ammo: "Napalm-75",
-    capacity: "7 seconds continuous",
-    fireRate: "Continuous",
-    damage: "Flame stream",
-    range: "20 ft",
-    vacuumCapable: false,
-    dualWieldable: false,
-    primaryFire: "Continuous flame spray",
-    secondaryFire: null,
-    description:
-      "Best reserved for tight engagement ranges aboard the UESC Marathon. Due to low gravity aboard Pfhor ships, the flamethrower can be used to fly through the air. Excels at chewing unarmored flesh targets.",
-    specialProperties: [
-      "Effective against unarmored flesh targets",
-      "Propulsion in low-gravity: Can be used to fly through the air",
-      "Napalm sticks to surfaces",
-    ],
-    source: "https://www.marathonwiki.com/Tozt.25_Flame_Unit",
-  },
-  {
-    id: "spnkr-x17",
-    name: "SPNKR-x17 Surface-Surface Missile Launcher",
-    game: ["marathon"],
-    category: "heavy",
-    type: "Shoulder-mounted rocket launcher",
-    ammo: "Short range surface-to-surface high-explosive mini-rockets",
-    capacity: "2 rockets (hand-fed)",
-    fireRate: "Semi-automatic",
-    damage: "High explosive, 10m blast radius",
-    range: "2500 meters effective",
-    vacuumCapable: false,
-    dualWieldable: false,
-    primaryFire: "Semi-automatic rocket fire",
-    secondaryFire: null,
-    description:
-      "One of the last weapons obtained, and the most powerful conventional weapon used by the Security Officer. Each tube holds one rocket, and rockets travel at 110 m/s with a 10-meter blast radius.",
-    specialProperties: ["Dual-tube launcher", "High explosive area damage", "Self-propelled rockets"],
-    source: "https://www.marathonwiki.com/SPNKR-x17_Surface-Surface_Missile_Launcher",
-  },
-  {
-    id: "alien-weapon",
-    name: "Alien Weapon",
-    game: ["marathon"],
-    category: "energy",
-    type: "Fully automatic alien rifle",
-    ammo: "Explosive rounds (alien)",
-    capacity: "Non-reloadable",
-    fireRate: "Fully automatic",
-    damage: "High",
-    range: "Medium (horizontal spread only)",
-    vacuumCapable: false,
-    dualWieldable: false,
-    primaryFire: "Automatic explosive rounds",
-    secondaryFire: null,
-    description:
-      "The mainstay weapon of Pfhor Enforcers. Cannot be reloaded — when empty, the weapon drops from inventory. If an Enforcer is killed with the flamethrower, they will NOT drop this weapon.",
-    specialProperties: [
-      "Cannot be reloaded — find new ones from killed Enforcers",
-      "More accurate than M75 (only spreads on horizontal axis)",
-      "Displayed as UNKNOWN WEAPON CLASS with system error 0xfded",
-    ],
-    source: "https://www.marathonwiki.com/Alien_Weapon",
-  },
-  {
-    id: "magnum-mega-class-a1",
-    name: ".44 Magnum Mega Class A1",
-    game: ["marathon2"],
-    category: "pistol",
-    type: "Semi-automatic pistol (improved variant)",
-    ammo: ".44 caliber high velocity rounds",
-    capacity: "8 rounds",
-    fireRate: "Semi-automatic",
-    damage: "High-damage pistol shots",
-    range: "Long",
-    vacuumCapable: true,
-    dualWieldable: true,
-    primaryFire: "High-damage pistol shots",
-    secondaryFire: null,
-    description:
-      "Based on the .45 MMC but improved by Durandal's S'pht allies. Dual-wieldable and vacuum-enabled.",
-    specialProperties: [
-      "Improved variant of the .45 Magnum",
-      "Dual-wieldable",
-      "Vacuum-enabled",
-    ],
-    source: "https://www.marathonwiki.com/.45_Magnum_Mega_Class",
-  },
-  {
-    id: "zeus-class-fusion-pistol",
-    name: "Zeus-Class Fusion Pistol",
-    game: ["marathon2", "infinity"],
-    category: "energy",
-    type: "Directed energy weapon (improved fusion pistol)",
-    ammo: "High-energy bolts",
-    capacity: "20 standard bolts / 4 charged bolts",
-    fireRate: "Semi-auto / Charged",
-    damage: "~5-6 TW (standard) / ~17.5 TW (charged)",
-    range: "Medium",
-    vacuumCapable: true,
-    dualWieldable: false,
-    primaryFire: "Standard energy bolts",
-    secondaryFire: "Overcharge blast",
-    description:
-      "One of the main counters to cybernetic Pfhor enemies. Deals increased damage against all cybernetic enemies. The explosion on kill can chain-react with groups.",
-    specialProperties: [
-      "Bonus damage vs. ALL Pfhor machinery",
-      "Kills can cause explosions that damage nearby enemies",
-      "Cannot fire underwater (short-circuits, damages player)",
-    ],
-    source: "https://www.marathonwiki.com/Zeus-Class_Fusion_pistol",
-  },
-  {
-    id: "ma-75b-battle-rifle",
-    name: "MA-75B Battle Rifle",
-    game: ["marathon2", "infinity"],
-    category: "rifle",
-    type: "Fully automatic battle rifle with under-barrel grenade launcher",
-    ammo: ".75 caliber rounds",
-    capacity: "52 rounds",
-    fireRate: "High (improved over M75)",
-    damage: "~10-15 per round",
-    range: "Medium",
-    vacuumCapable: false,
-    dualWieldable: false,
-    primaryFire: "Automatic rifle fire (improved accuracy and recoil over M75)",
-    secondaryFire: "Under-barrel grenade launcher (7 grenades)",
-    description:
-      "Durandal called the M75 'a ridiculous toy designed to impress aging pompous generals.' The MA-75B was meant to address the lacking accuracy and recoil. Functions the same in gameplay as its predecessor.",
-    specialProperties: [
-      "Longer barrel than M75",
-      "More manageable recoil",
-      "Grenade jumping and recoil flying still possible",
-    ],
-    source: "https://www.marathonwiki.com/MA-75B_Battle_Rifle",
-  },
-  {
-    id: "tozt-7-backpack-napalm",
-    name: "TOZT-7 Backpack Napalm Unit",
-    game: ["marathon2", "infinity"],
-    category: "energy",
-    type: "Backpack-mounted flamethrower",
-    ammo: "Napalm-75",
-    capacity: "Extended duration",
-    fireRate: "Continuous",
-    damage: "Extended-range flame stream",
-    range: "Extended range over Tozt.25",
-    vacuumCapable: false,
-    dualWieldable: false,
-    primaryFire: "Extended-range flame stream",
-    secondaryFire: null,
-    description: "Backpack-mounted for extended use. Improved range over the Tozt.25. Propulsion capability in low-gravity.",
-    specialProperties: [
-      "Backpack-mounted for extended use",
-      "Improved range over Tozt.25",
-      "Propulsion capability in low-gravity",
-    ],
-    source: "",
-  },
-  {
-    id: "wste-m5-shotgun",
-    name: "WSTE-M5 Combat Shotgun",
-    game: ["marathon2", "infinity"],
-    category: "rifle",
-    type: "Pump-action combat shotgun",
-    ammo: "Shotgun shells",
-    capacity: "8 shells",
-    fireRate: "Pump-action",
-    damage: "Close-quarters devastation",
-    range: "Short",
-    vacuumCapable: false,
-    dualWieldable: false,
-    primaryFire: "Wide-spread shotgun blast",
-    secondaryFire: null,
-    description: "Close-quarters devastation. Pump-action — must cycle between shots.",
-    specialProperties: ["Close-quarters devastation", "Pump-action between shots"],
-    source: "",
-  },
-  {
-    id: "spnkr-xp",
-    name: "SPNKR-XP Surface-Surface Missile Launcher",
-    game: ["marathon2", "infinity"],
-    category: "heavy",
-    type: "Improved rocket launcher",
-    ammo: "High-explosive mini-rockets",
-    capacity: "2 tubes",
-    fireRate: "Semi-automatic",
-    damage: "Improved velocity and blast radius over SPNKR-x17",
-    range: "Extended",
-    vacuumCapable: false,
-    dualWieldable: false,
-    primaryFire: "Semi-automatic rockets",
-    secondaryFire: null,
-    description: "Improved velocity and blast radius over the SPNKR-x17. Dual-tube design retained.",
-    specialProperties: ["Improved over SPNKR-x17", "Dual-tube design retained"],
-    source: "",
-  },
-  {
-    id: "kkv-7-smg",
-    name: "KKV-7 10mm SMG Flechette",
-    game: ["infinity"],
-    category: "rifle",
-    type: "Submachine gun",
-    ammo: "10mm rounds / Flechettes",
-    capacity: "Unknown",
-    fireRate: "High-rate SMG fire",
-    damage: "SMG / Armor-piercing flechette",
-    range: "Short-Medium",
-    vacuumCapable: false,
-    dualWieldable: false,
-    primaryFire: "High-rate SMG fire",
-    secondaryFire: "Flechette rounds (armor-piercing)",
-    description: "First SMG-type weapon in the trilogy. Fires both standard rounds and flechettes.",
-    specialProperties: ["First SMG-type weapon in the trilogy", "Fires both standard rounds and flechettes"],
-    source: "",
-  },
-];
-
 export const weaponCategories: { value: WeaponCategory; label: string }[] = [
+  { value: "assault_rifle", label: "Assault Rifles" },
+  { value: "machine_gun", label: "Machine Guns" },
+  { value: "precision_rifle", label: "Precision Rifles" },
   { value: "pistol", label: "Pistols" },
-  { value: "rifle", label: "Rifles" },
-  { value: "heavy", label: "Heavy" },
-  { value: "energy", label: "Energy" },
-  { value: "thrown", label: "Thrown" },
-  { value: "melee", label: "Melee" },
+  { value: "railgun", label: "Railguns" },
+  { value: "shotgun", label: "Shotguns" },
+  { value: "sniper_rifle", label: "Sniper Rifles" },
+  { value: "smg", label: "Submachine Guns" },
 ];
 
-export const gameTitles: { value: GameTitle; label: string }[] = [
-  { value: "marathon", label: "Marathon" },
-  { value: "marathon2", label: "Marathon 2: Durandal" },
-  { value: "infinity", label: "Marathon Infinity" },
+export const weapons: Weapon[] = [
+  // Assault Rifles
+  { id: "impact-h-ar", name: "Impact H-AR", category: "assault_rifle", description: "Heavy assault rifle with reinforced frame and high-caliber firing system.", firepower: "28.8", accuracy: "48.5", handling: "41", range: "60M", magazine: "18", zoom: "1.2X", ammoType: "Heavy Rounds", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/9/9a/Impact_HAR.png/revision/latest?cb=20260109230121", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/Impact_H-AR" },
+  { id: "m77-assault-rifle", name: "M77 Assault Rifle", category: "assault_rifle", description: "Press: Toggle the built-in flip scope for high precision.", firepower: "24.0", accuracy: "59.3", handling: "38", range: "46M", magazine: "24", zoom: "1.2X", ammoType: "Light Rounds", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/1/1f/M77_Assault_Rifle.png/revision/latest?cb=20260109230157", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/M77_Assault_Rifle" },
+  { id: "overrun-ar", name: "Overrun AR", category: "assault_rifle", description: "Light assault rifle with high rate of fire.", firepower: "14.7", accuracy: "50.3", handling: "46", range: "40M", magazine: "20", zoom: "1.2X", ammoType: "Light Rounds", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/0/0f/Overrun_AR.png/revision/latest?cb=20260109230225", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/Overrun_AR" },
+  { id: "v75-scar", name: "V75 SCAR", category: "assault_rifle", description: "Volt-actuated assault rifle with tracking projectiles. Sustained fire overheats the weapon, lowering its rate of fire.", firepower: "20.3", accuracy: "59.3", handling: "42", range: "46M", magazine: "2.5%", zoom: "1.2X", ammoType: "Volt Battery", special: "Tracking projectiles; overheats with sustained fire", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/e/e3/V75_SCAR.png/revision/latest?cb=20260109230300", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/V75_SCAR" },
+  // Machine Guns
+  { id: "conquest-lmg", name: "Conquest LMG", category: "machine_gun", description: "Light machine gun with ramping rate of fire. Stability is increased while firing from crouched position.", firepower: "24.0", accuracy: "49.9", handling: "22", range: "60M", magazine: "36", zoom: "1.2X", ammoType: "Light Rounds", special: "Ramping rate of fire; increased stability crouched", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/1/1d/Conquest_LMG.png/revision/latest?cb=20260109230405", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/Conquest_LMG" },
+  { id: "demolition-hmg", name: "Demolition HMG", category: "machine_gun", description: "Heavy machine gun with moderate rate of fire.", firepower: "45.8", accuracy: "63.8", handling: "31", range: "65M", magazine: "20", zoom: "1.2X", ammoType: "Heavy Rounds", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/3/39/Demolition_HMG.png/revision/latest?cb=20260109230436", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/Demolition_HMG" },
+  { id: "retaliator-lmg", name: "Retaliator LMG", category: "machine_gun", description: "Belt-fed light machine gun with high rate of fire.", firepower: "16.4", accuracy: "49.8", handling: "25", range: "51M", magazine: "44", zoom: "1.2X", ammoType: "Light Rounds", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/a/a1/Retaliator_LMG.png/revision/latest?cb=20260109230426", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/Retaliator_LMG" },
+  // Precision Rifles
+  { id: "br33-volley-rifle", name: "BR33 Volley Rifle", category: "precision_rifle", description: "Semiautomatic precision rifle with three-round burst fire.", firepower: "20.7", accuracy: "61.2", handling: "45", range: "48M", magazine: "27", zoom: "1.4X", ammoType: "Light Rounds", special: "Three-round burst", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/1/1f/B33_Volley_Rifle.png/revision/latest?cb=20260109230511", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/BR33_Volley_Rifle" },
+  { id: "hardline-pr", name: "Hardline PR", category: "precision_rifle", description: "Single-round semiautomatic precision rifle with high rate of fire.", firepower: "36.8", accuracy: "66.9", handling: "36", range: "74M", magazine: "14", zoom: "1.2X", ammoType: "Heavy Rounds", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/d/de/Hardline_PR.png/revision/latest?cb=20260109230535", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/Hardline_PR" },
+  { id: "repeater-hpr", name: "Repeater HPR", category: "precision_rifle", description: "Lever-action heavy precision rifle. Reloads one round at a time.", firepower: "79.8", accuracy: "60.4", handling: "52", range: "37M", magazine: "9", zoom: "1.2X", ammoType: "Heavy Rounds", special: "Lever-action; one-round-at-a-time reload", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/b/b9/Repeater_HPR.png/revision/latest?cb=20260109230541", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/Repeater_HPR" },
+  { id: "stryder-m1t", name: "Stryder M1T", category: "precision_rifle", description: "Fine-tuned semiautomatic precision rifle.", firepower: "46.5", accuracy: "59.4", handling: "39", range: "84M", magazine: "12", zoom: "1.4X", ammoType: "Light Rounds", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/3/33/Stryder_M1T.png/revision/latest?cb=20260109230548", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/Stryder_M1T" },
+  { id: "twin-tap-hbr", name: "Twin Tap HBR", category: "precision_rifle", description: "Burst-fire heavy ballistic precision rifle with dual-round delivery system.", firepower: "28.9", accuracy: "59.8", handling: "51", range: "48M", magazine: "20", zoom: "1.4X", ammoType: "Light Rounds", special: "Dual-round burst fire", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/3/33/Twin_Tap_HBR.png/revision/latest?cb=20260109230554", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/Twin_Tap_HBR" },
+  { id: "v66-lookout", name: "V66 Lookout", category: "precision_rifle", description: "Volt-actuated precision rifle with tracking projectiles. Sustained fire overheats the weapon, lowering its rate of fire.", firepower: "46.8", accuracy: "66.0", handling: "46", range: "88M", magazine: "3.4%", zoom: "1.4X", ammoType: "Volt Battery", special: "Tracking projectiles; overheats with sustained fire", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/c/c9/V66_Lookout.png/revision/latest?cb=20260109230601", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/V66_Lookout" },
+  // Pistols
+  { id: "ce-tactical-sidearm", name: "CE Tactical Sidearm", category: "pistol", description: "Light ballistics pistol with standard semiautomatic fire.", firepower: "36.0", accuracy: "56.3", handling: "59", range: "26M", magazine: "18", zoom: "1.1X", ammoType: "Light Rounds", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/c/c6/CE_Tactical_Sidearm.png/revision/latest?cb=20260109230903", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/CE_Tactical_Sidearm" },
+  { id: "magnum-mc", name: "Magnum MC", category: "pistol", description: "Heavy pistol equipped with modular muzzle and optics rail.", firepower: "66.0", accuracy: "54.8", handling: "40", range: "21M", magazine: "12", zoom: "1.4X", ammoType: "Heavy Rounds", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/e/e1/Magnum_MC.png/revision/latest?cb=20260109230914", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/Magnum_MC" },
+  { id: "v11-punch", name: "V11 Punch", category: "pistol", description: "Tap for semiautomatic fire or hold to build and release a high-damage burst.", firepower: "37.5", accuracy: "36.0", handling: "49", range: "21M", magazine: "4.5%", zoom: "1.1X", ammoType: "Volt Battery", special: "Charge-up burst fire mode", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/2/2b/V11_Punch.png/revision/latest?cb=20260109230924", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/V11_Punch" },
+  // Railguns
+  { id: "ares-rg", name: "ARES RG", category: "railgun", description: "Heavy ballistic railgun. Charges up to fire massive projectile at extreme velocity.", firepower: "159.9", accuracy: "100.0", handling: "47", range: "55M", magazine: "4", zoom: "2.5X", ammoType: "MIPS Rounds", special: "Charge-up mechanic", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/c/ca/ARES_RG.png/revision/latest?cb=20260109232148", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/ARES_RG" },
+  { id: "v00-zeus-rg", name: "V00 ZEUS RG", category: "railgun", description: "Anti-materiel railgun. Fires automatically once fully charged.", firepower: "150.0", accuracy: "74.8", handling: "47", range: "55M", magazine: "50%", zoom: "2.0X", ammoType: "Volt Cells", special: "Auto-fires when fully charged", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/f/fd/V00_ZEUS_RG.png/revision/latest?cb=20260109232155", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/V00_ZEUS_RG" },
+  // Shotguns
+  { id: "misriah-2442", name: "Misriah 2442", category: "shotgun", description: "Pump-action shotgun kept for close encounters. Reloads one MIPS cartridge at a time.", firepower: "168.0", accuracy: "54", handling: "", range: "11M", magazine: "4", zoom: "1.1X", ammoType: "MIPS Rounds", special: "Pump-action; one-at-a-time reload", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/1/13/Misriah_2442.png/revision/latest?cb=20260109232306", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/Misriah_2442" },
+  { id: "v85-circuit-breaker", name: "V85 Circuit Breaker", category: "shotgun", description: "Fixed-pattern heavy volt shotgun. Can be charged up to three levels.", firepower: "220.0", accuracy: "42", handling: "", range: "14M", magazine: "", zoom: "1.1X", ammoType: "Volt Cells", special: "Three-level charge mechanic", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/c/cb/V85_Circuit_Breaker.png/revision/latest?cb=20260109232357", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/V85_Circuit_Breaker" },
+  { id: "wstr-combat-shotgun", name: "WSTR Combat Shotgun", category: "shotgun", description: "Ballistic double-barrel shotgun. Packs high damage in close quarters.", firepower: "172.5", accuracy: "49", handling: "", range: "4M", magazine: "2", zoom: "1.1X", ammoType: "MIPS Rounds", special: "Double-barrel", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/6/62/WSTR_Combat_Shotgun.png/revision/latest?cb=20260109232414", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/WSTR_Combat_Shotgun" },
+  // Sniper Rifles
+  { id: "longshot", name: "Longshot", category: "sniper_rifle", description: "Ballistic semiautomatic sniper rifle. High damage, high customization.", firepower: "63.8", accuracy: "81.0", handling: "15", range: "175M", magazine: "3", zoom: "4.0X", ammoType: "MIPS Rounds", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/e/e7/Longshot.png/revision/latest?cb=20260109232611", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/Longshot" },
+  { id: "outland", name: "Outland", category: "sniper_rifle", description: "Ballistic bolt-action sniper rifle. Extreme damage and range.", firepower: "", accuracy: "", handling: "", range: "", magazine: "", zoom: "", ammoType: "MIPS Rounds", special: "Bolt-action; extreme damage and range", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/5/58/Outland.png/revision/latest?cb=20260109232632", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/Outland" },
+  { id: "v99-channel-rifle", name: "V99 Channel Rifle", category: "sniper_rifle", description: "Powerful volt sniper rifle that charges up for increased damage while scoped. Hits almost instantly at long range.", firepower: "120.0", accuracy: "71.2", handling: "29", range: "175M", magazine: "29%", zoom: "4.0X", ammoType: "Volt Cells", special: "Charge-up while scoped; near-instant travel time", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/4/46/V99_Channel_Rifle.png/revision/latest?cb=20260109232648", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/V99_Channel_Rifle" },
+  // SMGs
+  { id: "bully-smg", name: "Bully SMG", category: "smg", description: "Heavy ballistic submachine gun with brutal reputation.", firepower: "22.5", accuracy: "62.0", handling: "47", range: "18M", magazine: "23", zoom: "1.1X", ammoType: "Heavy Rounds", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/1/14/Bully_SMG.png/revision/latest?cb=20260109232810", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/Bully_SMG" },
+  { id: "brrt-smg", name: "BRRT SMG", category: "smg", description: "Compact submachine gun with five-round burst firing mechanism.", firepower: "15.4", accuracy: "60.5", handling: "35", range: "27M", magazine: "35", zoom: "1.1X", ammoType: "Light Rounds", special: "Five-round burst", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/d/d9/BRRT_SMG.png/revision/latest?cb=20260109232819", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/BRRT_SMG" },
+  { id: "copperhead-rf", name: "Copperhead RF", category: "smg", description: "Light submachine gun with rapid fire capability.", firepower: "16.8", accuracy: "49.1", handling: "46", range: "15M", magazine: "21", zoom: "1.1X", ammoType: "Light Rounds", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/4/42/Copperhead_RF.png/revision/latest?cb=20260109232826", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/Copperhead_RF" },
+  { id: "v22-volt-thrower", name: "V22 Volt Thrower", category: "smg", description: "Ion-actuated submachine gun with smart lock-on system.", firepower: "18.0", accuracy: "74.1", handling: "43", range: "21M", magazine: "1.6%", zoom: "1.4X", ammoType: "Volt Battery", special: "Smart lock-on system", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/c/c0/V22_Volt_Thrower.png/revision/latest?cb=20260109232946", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/V22_Volt_Thrower" },
 ];
 
-export const weaponEffectivenessByEnemy: Record<string, Record<string, string>> = {
-  Magnum: { Pfhor: "++", S_pht: "+", Cyborg: "+", Hunter: "+", Juggernaut: "-" },
-  "Assault Rifle": { Pfhor: "+++", S_pht: "++", Cyborg: "-", Hunter: "-", Juggernaut: "--" },
-  "Fusion Pistol": { Pfhor: "++", S_pht: "+++", Cyborg: "+++", Hunter: "+++", Juggernaut: "++" },
-  Flamethrower: { Pfhor: "+++", S_pht: "--", Cyborg: "-", Hunter: "Immune", Juggernaut: "-" },
-  Rockets: { Pfhor: "++", S_pht: "++", Cyborg: "+", Hunter: "+++", Juggernaut: "+++" },
-  "Alien Weapon": { Pfhor: "++", S_pht: "++", Cyborg: "+", Hunter: "+", Juggernaut: "+" },
-};
+export const ammoTypes: { value: AmmoType; label: string }[] = [
+  { value: "Light Rounds", label: "Light Rounds" },
+  { value: "Heavy Rounds", label: "Heavy Rounds" },
+  { value: "MIPS Rounds", label: "MIPS Rounds" },
+  { value: "Volt Battery", label: "Volt Battery" },
+  { value: "Volt Cells", label: "Volt Cells" },
+];
