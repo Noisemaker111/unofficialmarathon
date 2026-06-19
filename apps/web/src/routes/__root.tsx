@@ -14,17 +14,18 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
   head: () => ({
     meta: [
       {
-        title: "Unofficial Marathon — 2026 Fan Site",
+        title: "Unofficial Marathon",
       },
       {
         name: "description",
-        content: "The go-to resource for Marathon (2026) players exploring Tau Ceti IV. Weapons, runners, factions, maps, guides, and LFG.",
+        content: "Weapons, runners, maps, loadouts, and LFG for Bungie's Marathon.",
       },
     ],
     links: [
       {
         rel: "icon",
-        href: "/favicon.ico",
+        href: "/favicon.svg",
+        type: "image/svg+xml",
       },
     ],
   }),

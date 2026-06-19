@@ -43,9 +43,8 @@ function WeaponComparePage() {
 
   return (
     <DatabasePageShell
-      label="TC4-SYS://WEAPONS.COMPARE"
       title="Weapon Compare"
-      description="Stack up to four weapons side-by-side. Select weapons from the weapons database to compare."
+      description="Compare up to four weapons."
       actions={
         <Link to="/weapons" className={cn(buttonVariants({ variant: "outline", size: "sm" }), "rounded-none font-mono uppercase")}>
           <ArrowLeft className="mr-2 h-4 w-4" /> Pick Weapons

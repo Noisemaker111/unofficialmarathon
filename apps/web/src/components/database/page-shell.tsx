@@ -1,15 +1,13 @@
 import type { ReactNode } from "react";
 
 interface DatabasePageShellProps {
-  label: string;
   title: string;
-  description: string;
   children: ReactNode;
+  description?: string;
   actions?: ReactNode;
 }
 
 export function DatabasePageShell({
-  label,
   title,
   description,
   children,
@@ -17,16 +15,15 @@ export function DatabasePageShell({
 }: DatabasePageShellProps) {
   return (
     <div className="min-h-full bg-background marathon-lattice">
-      <div className="container mx-auto max-w-6xl px-4 py-12">
-        <div className="mb-10 border-b border-border/50 pb-8 marathon-fiducial relative">
-          <div className="marathon-data-label mb-3">{label}</div>
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <h1 className="text-4xl font-black uppercase tracking-tighter text-primary">{title}</h1>
-              <p className="mt-2 max-w-3xl text-muted-foreground font-mono text-sm">{description}</p>
-            </div>
-            {actions}
+      <div className="container mx-auto max-w-6xl px-4 py-8 sm:py-10">
+        <div className="mb-8 flex flex-col gap-4 border-b border-border/50 pb-6 sm:flex-row sm:items-end sm:justify-between">
+          <div className="min-w-0">
+            <h1 className="text-3xl font-black uppercase tracking-tight text-primary sm:text-4xl">{title}</h1>
+            {description ? (
+              <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{description}</p>
+            ) : null}
           </div>
+          {actions}
         </div>
         {children}
       </div>

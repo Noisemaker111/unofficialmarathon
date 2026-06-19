@@ -32,9 +32,8 @@ function CoresPage() {
 
   return (
     <DatabasePageShell
-      label="TC4-SYS://CORES.DAT"
       title="Cores"
-      description="Runner-specific upgrades that modify abilities and define your build identity."
+      description="Runner-specific ability upgrades."
     >
       <FilterBar search={search} onSearchChange={setSearch} placeholder="Search cores..." onClear={() => setSearch("")}>
         <FilterPill active={runnerId === "all"} onClick={() => setRunnerId("all")}>All Runners</FilterPill>

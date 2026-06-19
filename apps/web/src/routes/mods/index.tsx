@@ -34,9 +34,8 @@ function ModsPage() {
 
   return (
     <DatabasePageShell
-      label="TC4-SYS://MODS.DAT"
       title="Weapon Mods"
-      description="Barrel, chip, grip, magazine, optic, and shield mods that reshape weapon performance."
+      description="Barrel, chip, grip, magazine, optic, shield."
     >
       <FilterBar search={search} onSearchChange={setSearch} placeholder="Search mods..." onClear={() => setSearch("")}>
         <FilterPill active={slot === "all"} onClick={() => setSlot("all")}>All Slots</FilterPill>

@@ -37,9 +37,8 @@ function ImplantsPage() {
 
   return (
     <DatabasePageShell
-      label="TC4-SYS://IMPLANTS.DAT"
       title="Implants"
-      description="Universal upgrades for Head, Torso, Legs, and Shield slots. Each implant modifies stats and adds unique traits."
+      description="Head, torso, legs, and shield slots."
     >
       <FilterBar search={search} onSearchChange={setSearch} placeholder="Search implants..." onClear={() => setSearch("")}>
         <FilterPill active={slot === "all"} onClick={() => setSlot("all")}>All Slots</FilterPill>

@@ -28,9 +28,8 @@ function ItemsPage() {
 
   return (
     <DatabasePageShell
-      label="TC4-SYS://ITEMS.DAT"
       title="Items"
-      description="Consumables, keys, salvage, valuables, backpacks, and extraction loot across Tau Ceti IV."
+      description="Consumables, keys, salvage, and loot."
     >
       <FilterBar search={search} onSearchChange={setSearch} placeholder="Search items..." onClear={() => setSearch("")}>
         <FilterPill active={type === "all"} onClick={() => setType("all")}>All Types</FilterPill>

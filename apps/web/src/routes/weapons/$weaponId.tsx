@@ -21,9 +21,8 @@ function WeaponDetailPage() {
   if (!weapon) {
     return (
       <DatabasePageShell
-        label="TC4-SYS://WEAPONS.DAT"
         title="Weapon Not Found"
-        description="This weapon is not in the database yet."
+        description="Not in database."
       >
         <Link to="/weapons" className={cn(buttonVariants({ variant: "outline" }), "rounded-none font-mono uppercase")}>
           <ArrowLeft className="mr-2 h-4 w-4" /> Back to Weapons
@@ -36,9 +35,8 @@ function WeaponDetailPage() {
 
   return (
     <DatabasePageShell
-      label="TC4-SYS://WEAPONS.DAT"
       title={weapon.name}
-      description={weapon.description}
+      description={weapon.category.replace("_", " ")}
       actions={
         <Link to="/weapons" className={cn(buttonVariants({ variant: "outline", size: "sm" }), "rounded-none font-mono uppercase")}>
           <ArrowLeft className="mr-2 h-4 w-4" /> All Weapons

@@ -45,9 +45,8 @@ function CosmeticsPage() {
 
   return (
     <DatabasePageShell
-      label="TC4-SYS://COSMETICS.DAT"
       title="Cosmetics"
-      description="Runner skins, weapon schemas, emblems, charms, profile backgrounds, and stickers."
+      description="Skins, emblems, charms, backgrounds."
     >
       <FilterBar search={search} onSearchChange={setSearch} placeholder="Search cosmetics..." onClear={() => setSearch("")}>
         <FilterPill active={type === "all"} onClick={() => setType("all")}>All Types</FilterPill>
@@ -87,9 +86,7 @@ function CosmeticsPage() {
         ))}
       </div>
 
-      <p className="mb-4 font-mono text-xs text-muted-foreground">
-        Showing {filtered.length} of {cosmetics.length} cosmetics
-      </p>
+      <p className="mb-4 text-xs text-muted-foreground">{filtered.length} results</p>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {filtered.map((cosmetic) => {

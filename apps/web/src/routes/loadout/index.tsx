@@ -168,9 +168,8 @@ function LoadoutBuilderPage() {
 
   return (
     <DatabasePageShell
-      label="TC4-SYS://LOADOUT.BUILDER"
       title="Loadout Builder"
-      description="Plan your runner, weapons, core, implants, mods, and gear. Save to the cloud and share with your LFG squad."
+      description="Plan builds and share with your squad."
       actions={
         <div className="flex flex-wrap gap-2">
           <Button

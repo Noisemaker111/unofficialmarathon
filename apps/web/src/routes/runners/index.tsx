@@ -25,9 +25,8 @@ function RunnersPage() {
 
   return (
     <DatabasePageShell
-      label="TC4-SYS://RUNNERS.DAT"
       title="Runners"
-      description="All playable runner shells with abilities, stats, and compatible cores."
+      description="Abilities, stats, and cores."
     >
       <FilterBar search={search} onSearchChange={setSearch} placeholder="Search runners..." onClear={() => setSearch("")} />
 

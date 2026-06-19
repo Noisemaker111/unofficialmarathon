@@ -22,9 +22,8 @@ function RunnerDetailPage() {
   if (!runner) {
     return (
       <DatabasePageShell
-        label="TC4-SYS://RUNNERS.DAT"
         title="Runner Not Found"
-        description="This runner shell is not in the database yet."
+        description="Not in database."
       >
         <Link to="/runners" className={cn(buttonVariants({ variant: "outline" }), "rounded-none font-mono uppercase")}>
           <ArrowLeft className="mr-2 h-4 w-4" /> Back to Runners
@@ -35,9 +34,8 @@ function RunnerDetailPage() {
 
   return (
     <DatabasePageShell
-      label="TC4-SYS://RUNNERS.DAT"
       title={runner.name}
-      description={runner.description}
+      description={runner.archetype}
       actions={
         <Link to="/runners" className={cn(buttonVariants({ variant: "outline", size: "sm" }), "rounded-none font-mono uppercase")}>
           <ArrowLeft className="mr-2 h-4 w-4" /> All Runners

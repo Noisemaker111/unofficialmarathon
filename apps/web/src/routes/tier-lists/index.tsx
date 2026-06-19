@@ -248,9 +248,8 @@ function TierListsPage() {
 
   return (
     <DatabasePageShell
-      label="TC4-SYS://TIERLISTS.DAT"
       title="Tier Lists"
-      description="Rank weapons, runners, and cosmetics from S to F. Save to the cloud and share your meta."
+      description="Rank weapons, runners, and cosmetics."
       actions={
         <div className="flex flex-wrap gap-2">
           <Button type="button" size="sm" className="rounded-none font-mono uppercase" onClick={saveToCloud} disabled={saving || loadingCloud}>

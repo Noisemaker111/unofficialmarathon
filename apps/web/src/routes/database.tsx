@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
-  Backpack,
   Cpu,
   Crosshair,
   Layers,
@@ -8,7 +7,6 @@ import {
   Palette,
   Puzzle,
   Shield,
-  Swords,
   Users,
   Wrench,
 } from "lucide-react";
@@ -21,84 +19,29 @@ import { mods } from "@/data/mods";
 import { runners } from "@/data/runners";
 import { weapons } from "@/data/weapons";
 import { DatabasePageShell } from "@/components/database/page-shell";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@unofficialmarathon/ui/components/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@unofficialmarathon/ui/components/card";
 
 export const Route = createFileRoute("/database")({
   component: DatabaseHubPage,
 });
 
 const sections = [
-  {
-    to: "/weapons",
-    title: "Weapons",
-    description: "Compare stats, browse mods, and plan your arsenal.",
-    count: weapons.length,
-    icon: Crosshair,
-  },
-  {
-    to: "/runners",
-    title: "Runners",
-    description: "Abilities, stats, and compatible cores for every shell.",
-    count: runners.length,
-    icon: Users,
-  },
-  {
-    to: "/cores",
-    title: "Cores",
-    description: "Runner-specific upgrades that modify abilities and playstyle.",
-    count: cores.length,
-    icon: Cpu,
-  },
-  {
-    to: "/implants",
-    title: "Implants",
-    description: "Universal slot upgrades for Head, Torso, Legs, and Shield.",
-    count: implants.length,
-    icon: Shield,
-  },
-  {
-    to: "/mods",
-    title: "Mods",
-    description: "Weapon attachments across barrel, chip, grip, optic, and more.",
-    count: mods.length,
-    icon: Wrench,
-  },
-  {
-    to: "/items",
-    title: "Items",
-    description: "Keys, consumables, salvage, valuables, and extraction loot.",
-    count: items.length,
-    icon: Package,
-  },
-  {
-    to: "/cosmetics",
-    title: "Cosmetics",
-    description: "Runner skins, weapon schemas, emblems, charms, and backgrounds.",
-    count: cosmetics.length,
-    icon: Palette,
-  },
-  {
-    to: "/loadout",
-    title: "Loadout Builder",
-    description: "Plan a full build and share it with your squad.",
-    count: null,
-    icon: Layers,
-  },
-  {
-    to: "/tier-lists",
-    title: "Tier Lists",
-    description: "Rank weapons and runners from S to F tier.",
-    count: null,
-    icon: Puzzle,
-  },
+  { to: "/weapons", title: "Weapons", count: weapons.length, icon: Crosshair },
+  { to: "/runners", title: "Runners", count: runners.length, icon: Users },
+  { to: "/cores", title: "Cores", count: cores.length, icon: Cpu },
+  { to: "/implants", title: "Implants", count: implants.length, icon: Shield },
+  { to: "/mods", title: "Mods", count: mods.length, icon: Wrench },
+  { to: "/items", title: "Items", count: items.length, icon: Package },
+  { to: "/cosmetics", title: "Cosmetics", count: cosmetics.length, icon: Palette },
+  { to: "/loadout", title: "Loadout Builder", count: null, icon: Layers },
+  { to: "/tier-lists", title: "Tier Lists", count: null, icon: Puzzle },
 ] as const;
 
 function DatabaseHubPage() {
   return (
     <DatabasePageShell
-      label="TC4-SYS://DATABASE.HUB"
       title="Marathon Database"
-      description="The complete Tau Ceti IV reference — weapons, runners, implants, cores, mods, items, cosmetics, loadouts, and tier lists."
+      description="Weapons, runners, implants, cores, mods, items, and cosmetics."
     >
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card className="rounded-none border-primary/30 bg-primary/5">
@@ -151,31 +94,10 @@ function DatabaseHubPage() {
                   )}
                 </div>
                 <CardTitle className="uppercase tracking-wider">{section.title}</CardTitle>
-                <CardDescription className="font-mono text-xs">{section.description}</CardDescription>
               </CardHeader>
             </Card>
           </Link>
         ))}
-      </div>
-
-      <div className="mt-10 rounded-none border border-border/50 bg-muted/10 p-4">
-        <div className="flex items-start gap-3">
-          <Backpack className="mt-0.5 h-5 w-5 text-primary" />
-          <div>
-            <h2 className="font-mono text-sm font-bold uppercase tracking-wider text-primary">Also Available</h2>
-            <p className="mt-1 font-mono text-xs text-muted-foreground">
-              Faction breakdowns remain in{" "}
-              <Link to="/guides" className="text-primary hover:underline">
-                Guides
-              </Link>
-              . Squad up with a shared loadout via{" "}
-              <Link to="/lfg" className="text-primary hover:underline">
-                LFG
-              </Link>
-              .
-            </p>
-          </div>
-        </div>
       </div>
     </DatabasePageShell>
   );

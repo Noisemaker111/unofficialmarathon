@@ -36,9 +36,8 @@ function WeaponsPage() {
   return (
     <>
       <DatabasePageShell
-        label="TC4-SYS://WEAPONS.DAT"
         title="Weapons"
-        description="Browse all Marathon weapons with stats, categories, and side-by-side comparison."
+        description="Stats, categories, and compare."
         actions={
           <Link
             to="/weapons/compare"
