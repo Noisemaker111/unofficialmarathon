@@ -1,9 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { mapZones, type ThreatLevel } from "@/data/maps";
+import { getPoisByZone, type MapPoi, type PoiType } from "@/data/map-keys";
+import { getItemById } from "@/data/items";
 import { Badge } from "@unofficialmarathon/ui/components/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@unofficialmarathon/ui/components/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@unofficialmarathon/ui/components/tabs";
-import { MapPin, ExternalLink, Shield, Users, Clock, Swords, Activity, Coins, Navigation } from "lucide-react";
+import { MapPin, ExternalLink, Shield, Users, Clock, Swords, Activity, Coins, Navigation, Key, Box, Terminal, Flag } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/maps")({
   component: MapsPage,
@@ -22,6 +25,91 @@ const threatBg: Record<ThreatLevel, string> = {
   high: "bg-marathon-pink/10",
   extreme: "bg-faction-arachne/10",
 };
+
+const poiTypeLabels: Record<PoiType, string> = {
+  key: "Keys",
+  extraction: "Extractions",
+  lockdown: "Lockdown",
+  container: "Containers",
+  terminal: "Terminals",
+  priority: "Priority",
+};
+
+const poiTypeIcons: Record<PoiType, typeof Key> = {
+  key: Key,
+  extraction: Navigation,
+  lockdown: Shield,
+  container: Box,
+  terminal: Terminal,
+  priority: Flag,
+};
+
+function ZonePoiSection({ zoneId }: { zoneId: string }) {
+  const pois = getPoisByZone(zoneId);
+  if (pois.length === 0) return null;
+
+  const grouped = (Object.keys(poiTypeLabels) as PoiType[]).map((type) => ({
+    type,
+    items: pois.filter((poi) => poi.type === type),
+  })).filter((group) => group.items.length > 0);
+
+  return (
+    <div className="mb-8 space-y-6">
+      <h3 className="text-xs font-bold uppercase tracking-widest text-primary border-b border-border/50 pb-2 flex items-center gap-2">
+        <Key className="h-4 w-4" />
+        Keys & Points of Interest
+      </h3>
+      <div className="grid gap-4 lg:grid-cols-2">
+        {grouped.map((group) => {
+          const Icon = poiTypeIcons[group.type];
+          return (
+            <div key={group.type} className="space-y-3">
+              <h4 className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                <Icon className="h-3.5 w-3.5" />
+                {poiTypeLabels[group.type]}
+              </h4>
+              <div className="space-y-2">
+                {group.items.map((poi) => (
+                  <PoiCard key={poi.id} poi={poi} />
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function PoiCard({ poi }: { poi: MapPoi }) {
+  const linkedItem = poi.itemId ? getItemById(poi.itemId) : undefined;
+
+  return (
+    <div className="border border-border/40 bg-background/60 p-3">
+      <div className="flex items-start justify-between gap-2">
+        <div>
+          <p className="font-mono text-sm font-bold uppercase text-foreground">{poi.name}</p>
+          <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-primary">{poi.region}</p>
+        </div>
+        {poi.rarity && (
+          <Badge variant="outline" className="rounded-none font-mono text-[9px] uppercase">{poi.rarity}</Badge>
+        )}
+      </div>
+      <p className="mt-2 font-mono text-xs text-muted-foreground">{poi.location}</p>
+      {poi.unlocks && (
+        <p className="mt-1 font-mono text-[10px] text-muted-foreground">Unlocks: {poi.unlocks}</p>
+      )}
+      {poi.notes && (
+        <p className="mt-1 font-mono text-[10px] text-primary/80">{poi.notes}</p>
+      )}
+      {linkedItem && (
+        <Link to="/items" className="mt-2 inline-block font-mono text-[10px] uppercase tracking-wider text-primary hover:underline">
+          View in Items DB →
+        </Link>
+      )}
+    </div>
+  );
+}
 
 function MapsPage() {
   return (
@@ -147,6 +235,8 @@ function MapsPage() {
                         </div>
                       </div>
                     )}
+
+                    <ZonePoiSection zoneId={zone.id} />
 
                     <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-border/50">
                       <a

@@ -9,7 +9,10 @@
  */
 
 import type * as healthCheck from "../healthCheck.js";
+import type * as liveStats from "../liveStats.js";
+import type * as loadouts from "../loadouts.js";
 import type * as sessions from "../sessions.js";
+import type * as tierLists from "../tierLists.js";
 
 import type {
   ApiFromModules,
@@ -19,7 +22,10 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   healthCheck: typeof healthCheck;
+  liveStats: typeof liveStats;
+  loadouts: typeof loadouts;
   sessions: typeof sessions;
+  tierLists: typeof tierLists;
 }>;
 
 /**

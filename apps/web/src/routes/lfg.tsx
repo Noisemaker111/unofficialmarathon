@@ -21,6 +21,7 @@ const RUNNER_ICONS: Record<string, string> = {
   Triage: "https://marathon.wiki.gallery/images/thumb/a/af/Triage_runner_card.jpg/400px-Triage_runner_card.jpg",
   Recon: "https://marathon.wiki.gallery/images/thumb/6/6e/Recon_runner_card.jpg/400px-Recon_runner_card.jpg",
   Thief: "https://marathon.wiki.gallery/images/thumb/2/2e/Thief_runner_card.jpg/400px-Thief_runner_card.jpg",
+  Sentinel: "https://www.marathonwiki.com/images/thumb/8/8f/Sentinel_card.png/400px-Sentinel_card.png",
 };
 
 // Map zone images - currently using placeholder (wiki CORS blocked)
@@ -63,6 +64,7 @@ interface SessionForm {
   playstyles: string[];
   playableShells: string[];
   description: string;
+  loadoutCode: string;
 }
 
 interface FilterState {
@@ -92,6 +94,7 @@ const DEFAULT_FORM: SessionForm = {
   playstyles: [],
   playableShells: [],
   description: "",
+  loadoutCode: "",
 };
 
 const DEFAULT_FILTERS: FilterState = {
@@ -660,6 +663,23 @@ function CreateSessionModal({
                 accentClass="text-marathon-cyan"
               />
             </div>
+
+            <div>
+              <label className="mb-1.5 block text-[10px] font-mono uppercase tracking-[0.2em] text-primary">
+                Loadout Code (optional)
+              </label>
+              <Input
+                type="text"
+                value={form.loadoutCode}
+                onChange={(e) => setForm((s) => ({ ...s, loadoutCode: e.target.value }))}
+                placeholder="Paste code from Loadout Builder"
+                className="font-mono text-xs bg-background/50 border-border/40 focus:border-primary/60"
+              />
+              <p className="mt-1 text-[10px] font-mono text-muted-foreground">
+                Build a loadout in the{" "}
+                <a href="/loadout" className="text-primary hover:underline">Loadout Builder</a>, save to cloud, and paste the Cloud ID here.
+              </p>
+            </div>
           </div>
 
           {/* Action bar */}
@@ -714,6 +734,7 @@ function SessionCard({
     teamSize: number;
     maxTeam: number;
     description: string;
+    loadoutCode?: string;
     activity?: string;
     expiresAt?: number;
   };
@@ -825,6 +846,18 @@ function SessionCard({
               <p className="text-[11px] font-mono text-muted-foreground/80 leading-relaxed line-clamp-2">
                 {session.description}
               </p>
+            )}
+            {session.loadoutCode && (
+              <a
+                href={
+                  /^[a-z0-9]{8,12}$/i.test(session.loadoutCode)
+                    ? `/loadout?id=${encodeURIComponent(session.loadoutCode)}`
+                    : `/loadout?code=${encodeURIComponent(session.loadoutCode)}`
+                }
+                className="inline-flex text-[10px] font-mono uppercase tracking-wider text-primary hover:underline"
+              >
+                View Host Loadout →
+              </a>
             )}
 
             {/* Data tags — show "Any" fallback when a category is empty */}
@@ -1001,6 +1034,7 @@ function LFGPage() {
       playstyles: form.playstyles,
       playableShells: form.playableShells,
       description: form.description.trim(),
+      loadoutCode: form.loadoutCode.trim() || undefined,
       ownerToken,
     });
     setShowCreate(false);

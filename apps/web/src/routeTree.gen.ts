@@ -13,7 +13,20 @@ import { Route as TipsRouteImport } from './routes/tips'
 import { Route as MapsRouteImport } from './routes/maps'
 import { Route as LfgRouteImport } from './routes/lfg'
 import { Route as GuidesRouteImport } from './routes/guides'
+import { Route as DatabaseRouteImport } from './routes/database'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WeaponsIndexRouteImport } from './routes/weapons/index'
+import { Route as TierListsIndexRouteImport } from './routes/tier-lists/index'
+import { Route as RunnersIndexRouteImport } from './routes/runners/index'
+import { Route as ModsIndexRouteImport } from './routes/mods/index'
+import { Route as LoadoutIndexRouteImport } from './routes/loadout/index'
+import { Route as ItemsIndexRouteImport } from './routes/items/index'
+import { Route as ImplantsIndexRouteImport } from './routes/implants/index'
+import { Route as CosmeticsIndexRouteImport } from './routes/cosmetics/index'
+import { Route as CoresIndexRouteImport } from './routes/cores/index'
+import { Route as WeaponsCompareRouteImport } from './routes/weapons/compare'
+import { Route as WeaponsWeaponIdRouteImport } from './routes/weapons/$weaponId'
+import { Route as RunnersRunnerIdRouteImport } from './routes/runners/$runnerId'
 
 const TipsRoute = TipsRouteImport.update({
   id: '/tips',
@@ -35,48 +48,220 @@ const GuidesRoute = GuidesRouteImport.update({
   path: '/guides',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DatabaseRoute = DatabaseRouteImport.update({
+  id: '/database',
+  path: '/database',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WeaponsIndexRoute = WeaponsIndexRouteImport.update({
+  id: '/weapons/',
+  path: '/weapons/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TierListsIndexRoute = TierListsIndexRouteImport.update({
+  id: '/tier-lists/',
+  path: '/tier-lists/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RunnersIndexRoute = RunnersIndexRouteImport.update({
+  id: '/runners/',
+  path: '/runners/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModsIndexRoute = ModsIndexRouteImport.update({
+  id: '/mods/',
+  path: '/mods/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoadoutIndexRoute = LoadoutIndexRouteImport.update({
+  id: '/loadout/',
+  path: '/loadout/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ItemsIndexRoute = ItemsIndexRouteImport.update({
+  id: '/items/',
+  path: '/items/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImplantsIndexRoute = ImplantsIndexRouteImport.update({
+  id: '/implants/',
+  path: '/implants/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CosmeticsIndexRoute = CosmeticsIndexRouteImport.update({
+  id: '/cosmetics/',
+  path: '/cosmetics/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoresIndexRoute = CoresIndexRouteImport.update({
+  id: '/cores/',
+  path: '/cores/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WeaponsCompareRoute = WeaponsCompareRouteImport.update({
+  id: '/weapons/compare',
+  path: '/weapons/compare',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WeaponsWeaponIdRoute = WeaponsWeaponIdRouteImport.update({
+  id: '/weapons/$weaponId',
+  path: '/weapons/$weaponId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RunnersRunnerIdRoute = RunnersRunnerIdRouteImport.update({
+  id: '/runners/$runnerId',
+  path: '/runners/$runnerId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/database': typeof DatabaseRoute
   '/guides': typeof GuidesRoute
   '/lfg': typeof LfgRoute
   '/maps': typeof MapsRoute
   '/tips': typeof TipsRoute
+  '/runners/$runnerId': typeof RunnersRunnerIdRoute
+  '/weapons/$weaponId': typeof WeaponsWeaponIdRoute
+  '/weapons/compare': typeof WeaponsCompareRoute
+  '/cores/': typeof CoresIndexRoute
+  '/cosmetics/': typeof CosmeticsIndexRoute
+  '/implants/': typeof ImplantsIndexRoute
+  '/items/': typeof ItemsIndexRoute
+  '/loadout/': typeof LoadoutIndexRoute
+  '/mods/': typeof ModsIndexRoute
+  '/runners/': typeof RunnersIndexRoute
+  '/tier-lists/': typeof TierListsIndexRoute
+  '/weapons/': typeof WeaponsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/database': typeof DatabaseRoute
   '/guides': typeof GuidesRoute
   '/lfg': typeof LfgRoute
   '/maps': typeof MapsRoute
   '/tips': typeof TipsRoute
+  '/runners/$runnerId': typeof RunnersRunnerIdRoute
+  '/weapons/$weaponId': typeof WeaponsWeaponIdRoute
+  '/weapons/compare': typeof WeaponsCompareRoute
+  '/cores': typeof CoresIndexRoute
+  '/cosmetics': typeof CosmeticsIndexRoute
+  '/implants': typeof ImplantsIndexRoute
+  '/items': typeof ItemsIndexRoute
+  '/loadout': typeof LoadoutIndexRoute
+  '/mods': typeof ModsIndexRoute
+  '/runners': typeof RunnersIndexRoute
+  '/tier-lists': typeof TierListsIndexRoute
+  '/weapons': typeof WeaponsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/database': typeof DatabaseRoute
   '/guides': typeof GuidesRoute
   '/lfg': typeof LfgRoute
   '/maps': typeof MapsRoute
   '/tips': typeof TipsRoute
+  '/runners/$runnerId': typeof RunnersRunnerIdRoute
+  '/weapons/$weaponId': typeof WeaponsWeaponIdRoute
+  '/weapons/compare': typeof WeaponsCompareRoute
+  '/cores/': typeof CoresIndexRoute
+  '/cosmetics/': typeof CosmeticsIndexRoute
+  '/implants/': typeof ImplantsIndexRoute
+  '/items/': typeof ItemsIndexRoute
+  '/loadout/': typeof LoadoutIndexRoute
+  '/mods/': typeof ModsIndexRoute
+  '/runners/': typeof RunnersIndexRoute
+  '/tier-lists/': typeof TierListsIndexRoute
+  '/weapons/': typeof WeaponsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/guides' | '/lfg' | '/maps' | '/tips'
+  fullPaths:
+    | '/'
+    | '/database'
+    | '/guides'
+    | '/lfg'
+    | '/maps'
+    | '/tips'
+    | '/runners/$runnerId'
+    | '/weapons/$weaponId'
+    | '/weapons/compare'
+    | '/cores/'
+    | '/cosmetics/'
+    | '/implants/'
+    | '/items/'
+    | '/loadout/'
+    | '/mods/'
+    | '/runners/'
+    | '/tier-lists/'
+    | '/weapons/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/guides' | '/lfg' | '/maps' | '/tips'
-  id: '__root__' | '/' | '/guides' | '/lfg' | '/maps' | '/tips'
+  to:
+    | '/'
+    | '/database'
+    | '/guides'
+    | '/lfg'
+    | '/maps'
+    | '/tips'
+    | '/runners/$runnerId'
+    | '/weapons/$weaponId'
+    | '/weapons/compare'
+    | '/cores'
+    | '/cosmetics'
+    | '/implants'
+    | '/items'
+    | '/loadout'
+    | '/mods'
+    | '/runners'
+    | '/tier-lists'
+    | '/weapons'
+  id:
+    | '__root__'
+    | '/'
+    | '/database'
+    | '/guides'
+    | '/lfg'
+    | '/maps'
+    | '/tips'
+    | '/runners/$runnerId'
+    | '/weapons/$weaponId'
+    | '/weapons/compare'
+    | '/cores/'
+    | '/cosmetics/'
+    | '/implants/'
+    | '/items/'
+    | '/loadout/'
+    | '/mods/'
+    | '/runners/'
+    | '/tier-lists/'
+    | '/weapons/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DatabaseRoute: typeof DatabaseRoute
   GuidesRoute: typeof GuidesRoute
   LfgRoute: typeof LfgRoute
   MapsRoute: typeof MapsRoute
   TipsRoute: typeof TipsRoute
+  RunnersRunnerIdRoute: typeof RunnersRunnerIdRoute
+  WeaponsWeaponIdRoute: typeof WeaponsWeaponIdRoute
+  WeaponsCompareRoute: typeof WeaponsCompareRoute
+  CoresIndexRoute: typeof CoresIndexRoute
+  CosmeticsIndexRoute: typeof CosmeticsIndexRoute
+  ImplantsIndexRoute: typeof ImplantsIndexRoute
+  ItemsIndexRoute: typeof ItemsIndexRoute
+  LoadoutIndexRoute: typeof LoadoutIndexRoute
+  ModsIndexRoute: typeof ModsIndexRoute
+  RunnersIndexRoute: typeof RunnersIndexRoute
+  TierListsIndexRoute: typeof TierListsIndexRoute
+  WeaponsIndexRoute: typeof WeaponsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -109,6 +294,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuidesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/database': {
+      id: '/database'
+      path: '/database'
+      fullPath: '/database'
+      preLoaderRoute: typeof DatabaseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -116,15 +308,112 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/weapons/': {
+      id: '/weapons/'
+      path: '/weapons'
+      fullPath: '/weapons/'
+      preLoaderRoute: typeof WeaponsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tier-lists/': {
+      id: '/tier-lists/'
+      path: '/tier-lists'
+      fullPath: '/tier-lists/'
+      preLoaderRoute: typeof TierListsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/runners/': {
+      id: '/runners/'
+      path: '/runners'
+      fullPath: '/runners/'
+      preLoaderRoute: typeof RunnersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mods/': {
+      id: '/mods/'
+      path: '/mods'
+      fullPath: '/mods/'
+      preLoaderRoute: typeof ModsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/loadout/': {
+      id: '/loadout/'
+      path: '/loadout'
+      fullPath: '/loadout/'
+      preLoaderRoute: typeof LoadoutIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/items/': {
+      id: '/items/'
+      path: '/items'
+      fullPath: '/items/'
+      preLoaderRoute: typeof ItemsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/implants/': {
+      id: '/implants/'
+      path: '/implants'
+      fullPath: '/implants/'
+      preLoaderRoute: typeof ImplantsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cosmetics/': {
+      id: '/cosmetics/'
+      path: '/cosmetics'
+      fullPath: '/cosmetics/'
+      preLoaderRoute: typeof CosmeticsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cores/': {
+      id: '/cores/'
+      path: '/cores'
+      fullPath: '/cores/'
+      preLoaderRoute: typeof CoresIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/weapons/compare': {
+      id: '/weapons/compare'
+      path: '/weapons/compare'
+      fullPath: '/weapons/compare'
+      preLoaderRoute: typeof WeaponsCompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/weapons/$weaponId': {
+      id: '/weapons/$weaponId'
+      path: '/weapons/$weaponId'
+      fullPath: '/weapons/$weaponId'
+      preLoaderRoute: typeof WeaponsWeaponIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/runners/$runnerId': {
+      id: '/runners/$runnerId'
+      path: '/runners/$runnerId'
+      fullPath: '/runners/$runnerId'
+      preLoaderRoute: typeof RunnersRunnerIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DatabaseRoute: DatabaseRoute,
   GuidesRoute: GuidesRoute,
   LfgRoute: LfgRoute,
   MapsRoute: MapsRoute,
   TipsRoute: TipsRoute,
+  RunnersRunnerIdRoute: RunnersRunnerIdRoute,
+  WeaponsWeaponIdRoute: WeaponsWeaponIdRoute,
+  WeaponsCompareRoute: WeaponsCompareRoute,
+  CoresIndexRoute: CoresIndexRoute,
+  CosmeticsIndexRoute: CosmeticsIndexRoute,
+  ImplantsIndexRoute: ImplantsIndexRoute,
+  ItemsIndexRoute: ItemsIndexRoute,
+  LoadoutIndexRoute: LoadoutIndexRoute,
+  ModsIndexRoute: ModsIndexRoute,
+  RunnersIndexRoute: RunnersIndexRoute,
+  TierListsIndexRoute: TierListsIndexRoute,
+  WeaponsIndexRoute: WeaponsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

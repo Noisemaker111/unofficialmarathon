@@ -2,11 +2,17 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@unofficialmarathon/ui/components/card";
 import { Badge } from "@unofficialmarathon/ui/components/badge";
 import { buttonVariants } from "@unofficialmarathon/ui/components/button";
-import { MapPin, Users, Swords, Compass, ExternalLink, ChevronRight, Shield, Crosshair } from "lucide-react";
+import { MapPin, Users, Swords, Compass, ExternalLink, ChevronRight, Shield, Crosshair, Layers, Database } from "lucide-react";
 
 import { weapons } from "@/data/weapons";
 import { runners } from "@/data/runners";
 import { factions } from "@/data/factions";
+import { implants } from "@/data/implants";
+import { cores } from "@/data/cores";
+import { mods } from "@/data/mods";
+import { items } from "@/data/items";
+import { cosmetics } from "@/data/cosmetics";
+import { LiveStatusWidget } from "@/components/live-status-widget";
 
 export const Route = createFileRoute("/")({
   component: HomeComponent,
@@ -40,8 +46,11 @@ function HomeComponent() {
               Survive the colony, secure the artifacts, and extract alive.
             </p>
             <div className="flex flex-wrap gap-4 pt-4">
-              <Link to="/guides" className={buttonVariants({ size: "lg", className: "rounded-none font-bold uppercase tracking-wider bg-primary text-primary-foreground hover:bg-primary/90" })}>
+              <Link to="/database" className={buttonVariants({ size: "lg", className: "rounded-none font-bold uppercase tracking-wider bg-primary text-primary-foreground hover:bg-primary/90" })}>
                 Explore Database
+              </Link>
+              <Link to="/loadout" className={buttonVariants({ variant: "outline", size: "lg", className: "rounded-none font-bold uppercase tracking-wider border-primary/50 text-primary hover:bg-primary/10" })}>
+                Build Loadout
               </Link>
               <Link to="/lfg" className={buttonVariants({ variant: "outline", size: "lg", className: "rounded-none font-bold uppercase tracking-wider border-primary/50 text-primary hover:bg-primary/10" })}>
                 Find a Squad
@@ -55,6 +64,24 @@ function HomeComponent() {
       <section className="container mx-auto max-w-6xl px-4 py-16">
         <div className="marathon-data-label mb-6">TC4-SYS://NAV.LOG</div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Link to="/database" className="group block">
+            <Card className="h-full rounded-none border-muted-foreground/20 bg-card/50 transition-colors hover:border-primary/50 hover:bg-card">
+              <CardHeader>
+                <Database className="mb-2 h-8 w-8 text-primary transition-transform group-hover:scale-110" />
+                <CardTitle className="uppercase tracking-wider">Database</CardTitle>
+                <CardDescription className="font-mono text-xs">Weapons, runners, implants, cores, mods, items, and cosmetics.</CardDescription>
+              </CardHeader>
+            </Card>
+          </Link>
+          <Link to="/loadout" className="group block">
+            <Card className="h-full rounded-none border-muted-foreground/20 bg-card/50 transition-colors hover:border-primary/50 hover:bg-card">
+              <CardHeader>
+                <Layers className="mb-2 h-8 w-8 text-primary transition-transform group-hover:scale-110" />
+                <CardTitle className="uppercase tracking-wider">Loadout</CardTitle>
+                <CardDescription className="font-mono text-xs">Plan builds and share them with your squad.</CardDescription>
+              </CardHeader>
+            </Card>
+          </Link>
           <Link to="/lfg" className="group block">
             <Card className="h-full rounded-none border-muted-foreground/20 bg-card/50 transition-colors hover:border-primary/50 hover:bg-card">
               <CardHeader>
@@ -73,12 +100,12 @@ function HomeComponent() {
               </CardHeader>
             </Card>
           </Link>
-          <Link to="/guides" className="group block">
+          <Link to="/tier-lists" className="group block">
             <Card className="h-full rounded-none border-muted-foreground/20 bg-card/50 transition-colors hover:border-primary/50 hover:bg-card">
               <CardHeader>
                 <Swords className="mb-2 h-8 w-8 text-primary transition-transform group-hover:scale-110" />
-                <CardTitle className="uppercase tracking-wider">Guides</CardTitle>
-                <CardDescription className="font-mono text-xs">Weapon stats, runner builds, and more.</CardDescription>
+                <CardTitle className="uppercase tracking-wider">Tier Lists</CardTitle>
+                <CardDescription className="font-mono text-xs">Rank weapons and runners from S to F.</CardDescription>
               </CardHeader>
             </Card>
           </Link>
@@ -94,6 +121,45 @@ function HomeComponent() {
         </div>
       </section>
 
+      {/* Live Status */}
+      <section className="border-t border-border/40 bg-black/40 py-12">
+        <div className="container mx-auto max-w-6xl px-4">
+          <div className="marathon-data-label mb-3">TC4-SYS://POPULATION.LIVE</div>
+          <h2 className="mb-6 text-2xl font-bold uppercase tracking-tight text-primary">Live Population</h2>
+          <LiveStatusWidget />
+        </div>
+      </section>
+
+      {/* Database Stats */}
+      <section className="border-t border-border/40 bg-muted/20 py-16 marathon-dither">
+        <div className="container mx-auto max-w-6xl px-4">
+          <div className="marathon-data-label mb-3">TC4-SYS://DATABASE.STATS</div>
+          <h2 className="mb-8 text-3xl font-bold uppercase tracking-tight text-primary">Database Coverage</h2>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+            {[
+              { label: "Weapons", count: weapons.length, to: "/weapons" },
+              { label: "Runners", count: runners.length, to: "/runners" },
+              { label: "Cores", count: cores.length, to: "/cores" },
+              { label: "Implants", count: implants.length, to: "/implants" },
+              { label: "Mods", count: mods.length, to: "/mods" },
+              { label: "Items", count: items.length, to: "/items" },
+              { label: "Cosmetics", count: cosmetics.length, to: "/cosmetics" },
+            ].map((entry) => (
+              <Link key={entry.to} to={entry.to}>
+                <Card className="rounded-none border-border/50 bg-background/80 transition-colors hover:border-primary/40">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="font-mono text-xs uppercase tracking-widest text-muted-foreground">{entry.label}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-3xl font-black text-primary">{entry.count}</p>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Featured Weapons */}
       <section className="border-t border-border/40 bg-muted/20 py-16 marathon-dither">
         <div className="container mx-auto max-w-6xl px-4">
@@ -103,7 +169,7 @@ function HomeComponent() {
               <h2 className="text-3xl font-bold uppercase tracking-tight text-primary">Arsenal</h2>
               <p className="text-muted-foreground font-mono text-sm">Featured weaponry for your next run.</p>
             </div>
-            <Link to="/guides" className={buttonVariants({ variant: "ghost", className: "hidden sm:flex rounded-none text-primary hover:text-primary hover:bg-primary/10 uppercase tracking-wider font-bold" })}>
+            <Link to="/weapons" className={buttonVariants({ variant: "ghost", className: "hidden sm:flex rounded-none text-primary hover:text-primary hover:bg-primary/10 uppercase tracking-wider font-bold" })}>
               View All <ChevronRight className="ml-2 h-4 w-4" />
             </Link>
           </div>
@@ -148,7 +214,8 @@ function HomeComponent() {
           </div>
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {runners.map((runner) => (
-              <Card key={runner.id} className="group relative overflow-hidden rounded-none border-muted-foreground/20 bg-card/50">
+              <Link key={runner.id} to="/runners/$runnerId" params={{ runnerId: runner.id }}>
+              <Card className="group relative overflow-hidden rounded-none border-muted-foreground/20 bg-card/50 h-full">
                 <div className="absolute inset-0 z-0">
                   <img src={runner.imageUrl} alt={runner.name} loading="lazy" className="w-full h-full object-cover opacity-40 transition-opacity group-hover:opacity-60 grayscale group-hover:grayscale-0" />
                 </div>
@@ -161,6 +228,7 @@ function HomeComponent() {
                   </Badge>
                 </CardHeader>
               </Card>
+              </Link>
             ))}
           </div>
         </div>

@@ -1,12 +1,15 @@
 import { Link } from "@tanstack/react-router";
 
+import { LiveStatusWidget } from "./live-status-widget";
 import { ModeToggle } from "./mode-toggle";
 
 const links = [
   { to: "/" as const, label: "Home" },
+  { to: "/database" as const, label: "Database" },
+  { to: "/loadout" as const, label: "Loadout" },
   { to: "/lfg" as const, label: "LFG" },
   { to: "/maps" as const, label: "Maps" },
-  { to: "/guides" as const, label: "Guides" },
+  { to: "/tier-lists" as const, label: "Tiers" },
   { to: "/tips" as const, label: "Tips" },
 ];
 
@@ -18,12 +21,12 @@ export default function Header() {
         <Link to="/" className="text-xl font-bold uppercase tracking-widest text-foreground flex items-center gap-2">
           <span className="text-primary">M</span>ARATHON
         </Link>
-        <nav className="flex items-center gap-1">
+        <nav className="flex items-center gap-1 overflow-x-auto">
           {links.map(({ to, label }) => (
             <Link
               key={to}
               to={to}
-              className="rounded-none px-3 py-1.5 text-sm font-mono font-medium text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary [&.active]:bg-primary/20 [&.active]:text-primary [&.active]:border-b-2 [&.active]:border-primary"
+              className="rounded-none px-3 py-1.5 text-sm font-mono font-medium text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary [&.active]:bg-primary/20 [&.active]:text-primary [&.active]:border-b-2 [&.active]:border-primary whitespace-nowrap"
               activeOptions={{ exact: to === "/" }}
             >
               {label}
@@ -31,7 +34,7 @@ export default function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-3">
-          <div className="marathon-pulse h-2 w-2 rounded-full bg-primary" title="System Active" />
+          <LiveStatusWidget compact />
           <ModeToggle />
         </div>
       </div>

@@ -100,6 +100,7 @@ export const createSession = mutation({
     playstyles: v.optional(v.array(v.string())),
     goals: v.optional(v.array(v.string())),
     playableShells: v.optional(v.array(v.string())),
+    loadoutCode: v.optional(v.string()),
     // Legacy field kept for backward compat
     lookingForShells: v.optional(v.array(v.string())),
     // Session token for ownership — allows edit/delete without auth
@@ -128,6 +129,7 @@ export const createSession = mutation({
       // Use playableShells if provided, fall back to lookingForShells for compat
       playableShells: args.playableShells ?? args.lookingForShells,
       lookingForShells: args.lookingForShells ?? args.playableShells,
+      loadoutCode: args.loadoutCode,
       expiresAt,
       ownerToken: args.ownerToken,
     });
@@ -301,6 +303,7 @@ export const updateSession = mutation({
     platforms: v.optional(v.array(v.string())),
     kitRarities: v.optional(v.array(v.string())),
     playableShells: v.optional(v.array(v.string())),
+    loadoutCode: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const { sessionId, ownerToken, ...updates } = args;

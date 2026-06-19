@@ -27,6 +27,7 @@ export default defineSchema({
     platform: v.optional(v.string()),
     kitRarity: v.optional(v.string()),
     lookingForShells: v.optional(v.array(v.string())),
+    loadoutCode: v.optional(v.string()),
   })
     .index("by_status", ["status"])
     .index("by_status_and_activity", ["status", "activity"])
@@ -50,4 +51,35 @@ export default defineSchema({
   })
     .index("by_session", ["sessionId"])
     .index("by_runner", ["runnerName"]),
+
+  loadouts: defineTable({
+    code: v.string(),
+    label: v.optional(v.string()),
+    runnerId: v.optional(v.string()),
+    payload: v.string(),
+    createdAt: v.number(),
+  }).index("by_code", ["code"]),
+
+  tierLists: defineTable({
+    code: v.string(),
+    type: v.union(v.literal("weapons"), v.literal("runners"), v.literal("cosmetics")),
+    payload: v.string(),
+    label: v.optional(v.string()),
+    ownerToken: v.optional(v.string()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_code", ["code"])
+    .index("by_owner_token", ["ownerToken"]),
+
+  liveStats: defineTable({
+    key: v.string(),
+    steamPlayers: v.optional(v.number()),
+    steamPeak24h: v.optional(v.number()),
+    twitchViewers: v.optional(v.number()),
+    twitchChannels: v.optional(v.number()),
+    season1Peak: v.optional(v.number()),
+    serverSlamPeak: v.optional(v.number()),
+    updatedAt: v.number(),
+  }).index("by_key", ["key"]),
 });

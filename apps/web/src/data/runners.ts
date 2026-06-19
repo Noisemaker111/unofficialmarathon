@@ -27,6 +27,7 @@ export interface Runner {
   defaultStats: Record<string, number>;
   imageUrl: string; // Runner card image URL
   wikiUrl: string;
+  season?: number;
 }
 
 export const runners: Runner[] = [
@@ -163,6 +164,32 @@ export const runners: Runner[] = [
     imageUrl: "https://marathon.wiki.gallery/images/thumb/1/1b/Rook_runner_card.jpg/400px-Rook_runner_card.jpg",
     wikiUrl: "https://marathonthegame.fandom.com/wiki/Runners/Scavenger",
   },
+  {
+    id: "sentinel",
+    name: "Sentinel",
+    archetype: "Defensive Strategist",
+    tech: "Area Denial",
+    series: "Bastion",
+    manufacturer: "Sekiguchi Genetics",
+    description: "Sentinel is a Season 2 defensive runner shell focused on holding ground, protecting allies, and controlling contested space on Tau Ceti IV.",
+    quote: "Sentinels are defenders. Customized tech and devices create offensive and defensive advantages when exploring hostile zones.",
+    abilities: [
+      { name: "Defender System", type: "prime", description: "Deploy an automated defensive platform that intercepts incoming explosives. You and your crew gain increased weapon stability and reload speed when standing near the device." },
+      { name: "Snare Mine", type: "tactical", description: "Deploy a stationary mine that releases a salvo of immobilizing submunitions when hostiles approach." },
+      { name: "Prey Tracker", type: "trait1", description: "Activate your shell's motion tracker system, which reveals the position of any moving hostile in the direction you're looking." },
+      { name: "Castle Doctrine", type: "trait2", description: "You ready and reload SMGs, shotguns, and pistols more quickly based on nearby hostiles. Splash damage briefly boosts Hardware, Firewall, and Self-Repair Speed." },
+    ],
+    defaultStats: { "Heat Capacity": 5, Agility: 10, "Loot Speed": 10, "Melee Damage": 20, "Prime Recovery": 10, "Tactical Recovery": 15, "Self-Repair Speed": 15, "Finisher Siphon": 15, "Revive Speed": 5, Hardware: 20, Firewall: 20, "Fall Resistance": 5, "Ping Duration": 5 },
+    imageUrl: "https://www.marathonwiki.com/images/thumb/8/8f/Sentinel_card.png/400px-Sentinel_card.png",
+    wikiUrl: "https://www.marathonwiki.com/Sentinel",
+    season: 2,
+  },
 ];
+
+export function getRunnerById(id: string): Runner | undefined {
+  return runners.find((runner) => runner.id === id);
+}
+
+export const playableRunners = runners.filter((runner) => runner.id !== "rook");
 
 export const runnerArchetypes = runners.map((r) => r.archetype);
