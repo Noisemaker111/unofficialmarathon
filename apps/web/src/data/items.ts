@@ -3,6 +3,7 @@
 
 import type { ItemType, Rarity } from "@/data/types";
 import { extendedItems } from "@/data/items-extended";
+import { getItemImageUrl } from "@/lib/gear-images";
 
 export interface GameItem {
   id: string;
@@ -15,6 +16,7 @@ export interface GameItem {
   location?: string;
   unlocks?: string;
   wikiUrl: string;
+  imageUrl?: string;
 }
 
 export const itemTypes: { value: ItemType; label: string }[] = [
@@ -132,6 +134,10 @@ for (const seed of extendedItems) {
     ...seed,
     wikiUrl: "https://marathonthegame.fandom.com/wiki/Items",
   });
+}
+
+for (const entry of items) {
+  entry.imageUrl = getItemImageUrl(entry.id);
 }
 
 export function getItemById(id: string): GameItem | undefined {

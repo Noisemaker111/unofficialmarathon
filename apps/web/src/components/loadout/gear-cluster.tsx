@@ -1,11 +1,11 @@
-import { Cpu, User } from "lucide-react";
-
+import { User } from "lucide-react";
 import { GearTypeIcon, ImplantSlotIcon } from "@/components/loadout/item-icons";
 import { SquareSlot } from "@/components/loadout/square-slot";
 import type { Core } from "@/data/cores";
 import type { Implant } from "@/data/implants";
 import type { GameItem } from "@/data/items";
 import type { ImplantSlot } from "@/data/types";
+import { getCoreImageUrl, getImplantSlotIcon } from "@/lib/gear-images";
 import { cn } from "@unofficialmarathon/ui/lib/utils";
 
 interface GearClusterProps {
@@ -44,6 +44,7 @@ export function GearCluster({
             <SquareSlot
               empty={!equipment}
               rarity={equipment?.rarity}
+              imageUrl={equipment?.imageUrl}
               icon={<GearTypeIcon type="equipment" className="h-4 w-4" />}
               active={activeSlot === "equipment"}
               onClick={onEquipmentClick}
@@ -55,7 +56,8 @@ export function GearCluster({
               <SquareSlot
                 empty={!core}
                 rarity={core?.rarity}
-                icon={<Cpu className="h-4 w-4" />}
+                imageUrl={getCoreImageUrl(core?.runnerId)}
+                icon={<GearTypeIcon type="core" className="h-4 w-4" />}
                 active={activeSlot === "core"}
                 onClick={onCoreClick}
                 className="!rounded-none"
@@ -63,7 +65,8 @@ export function GearCluster({
               <SquareSlot
                 empty={!secondaryCore}
                 rarity={secondaryCore?.rarity}
-                icon={<Cpu className="h-4 w-4" />}
+                imageUrl={getCoreImageUrl(secondaryCore?.runnerId)}
+                icon={<GearTypeIcon type="core" className="h-4 w-4" />}
                 active={activeSlot === "core-secondary"}
                 onClick={onSecondaryCoreClick}
                 className="!rounded-none"
@@ -80,6 +83,7 @@ export function GearCluster({
                 key={slot}
                 empty={!implants[slot]}
                 rarity={implants[slot]?.rarity}
+                imageUrl={getImplantSlotIcon(slot)}
                 icon={<ImplantSlotIcon slot={slot} className="h-4 w-4" />}
                 active={activeSlot === `implant-${slot}`}
                 onClick={() => onImplantClick(slot)}

@@ -1,9 +1,9 @@
-import { Backpack, Shield } from "lucide-react";
+import { Shield } from "lucide-react";
 
-import { GearTypeIcon } from "@/components/loadout/item-icons";
 import { SquareSlot } from "@/components/loadout/square-slot";
 import type { GameItem } from "@/data/items";
 import type { Implant } from "@/data/implants";
+import { getImplantSlotIcon, vaultAmmoIcons } from "@/lib/gear-images";
 import { cn } from "@unofficialmarathon/ui/lib/utils";
 
 interface BackpackPanelProps {
@@ -16,7 +16,17 @@ interface BackpackPanelProps {
 }
 
 const GRID_SIZE = 16;
-const COLS = 4;
+
+/** Demo vault tiles shown when backpack is equipped — mimics in-game stash grid. */
+const demoVaultTiles = [
+  { imageUrl: vaultAmmoIcons[0], label: "x80" },
+  { imageUrl: vaultAmmoIcons[0], label: "x80" },
+  { imageUrl: vaultAmmoIcons[1], label: "x80" },
+  { imageUrl: vaultAmmoIcons[1], label: "x80" },
+  { imageUrl: "/assets/consumables/patch-kit.png", label: "x3" },
+  { imageUrl: "/assets/consumables/shield-charge.png", label: "x3" },
+  { imageUrl: "/assets/consumables/energy-amp.png", label: "x3" },
+];
 
 export function BackpackPanel({
   backpack,
@@ -26,7 +36,7 @@ export function BackpackPanel({
   onShieldClick,
   className,
 }: BackpackPanelProps) {
-  const filledSlots = backpack ? 1 : 0;
+  const filledSlots = backpack ? 1 + demoVaultTiles.length : 0;
 
   return (
     <div className={cn("flex flex-col gap-3", className)}>
@@ -49,11 +59,24 @@ export function BackpackPanel({
                   size="lg"
                   empty={!backpack}
                   rarity={backpack?.rarity}
-                  icon={<Backpack className="h-4 w-4" />}
+                  imageUrl={backpack?.imageUrl}
                   active={activeSlot === "backpack"}
                   onClick={onBackpackClick}
                   className="!aspect-square !min-h-0"
                 />
+              );
+            }
+
+            const demo = backpack ? demoVaultTiles[i - 1] : undefined;
+            if (demo) {
+              return (
+                <div
+                  key={i}
+                  className="relative flex aspect-square items-center justify-center border border-white/10 bg-black/80"
+                >
+                  <img src={demo.imageUrl} alt="" className="max-h-[70%] max-w-[70%] object-contain opacity-90" />
+                  <span className="absolute bottom-0.5 right-1 font-mono text-[8px] tabular-nums text-white/50">{demo.label}</span>
+                </div>
               );
             }
 
@@ -79,6 +102,7 @@ export function BackpackPanel({
               size="lg"
               empty={i > 0 || !shield}
               rarity={shield?.rarity}
+              imageUrl={shield ? getImplantSlotIcon("shield") : undefined}
               icon={<Shield className="h-4 w-4" />}
               active={activeSlot === "implant-shield"}
               onClick={onShieldClick}
@@ -95,7 +119,7 @@ export function BackpackPanel({
             key={i}
             className="flex aspect-square items-center justify-center border border-white/10 bg-black/60"
           >
-            <GearTypeIcon type="mod" className="h-3 w-3 text-white/8" />
+            <span className="font-mono text-sm text-white/10">+</span>
           </div>
         ))}
       </div>

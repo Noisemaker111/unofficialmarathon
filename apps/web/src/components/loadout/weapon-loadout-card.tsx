@@ -2,6 +2,7 @@ import type { Mod } from "@/data/mods";
 import type { Weapon } from "@/data/weapons";
 import { GearTypeIcon } from "@/components/loadout/item-icons";
 import { formatCredits, rarityBarClass } from "@/components/loadout/loadout-utils";
+import { getModImageUrl } from "@/lib/gear-images";
 import { cn } from "@unofficialmarathon/ui/lib/utils";
 
 import { SquareSlot } from "./square-slot";
@@ -44,12 +45,14 @@ export function WeaponLoadoutCard({
       <div className="grid w-[72px] shrink-0 grid-cols-2 gap-px bg-white/10">
         {Array.from({ length: MOD_SLOTS }, (_, i) => {
           const mod = filledMods[i];
+          const modImage = mod ? getModImageUrl(mod.id) : undefined;
           return (
             <SquareSlot
               key={i}
               size="sm"
               empty={!mod}
               rarity={mod?.rarity}
+              imageUrl={modImage}
               icon={<GearTypeIcon type="mod" className="h-3.5 w-3.5" />}
               active={modSlotActive}
               onClick={onModClick}

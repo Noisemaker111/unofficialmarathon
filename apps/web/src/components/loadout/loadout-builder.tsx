@@ -18,6 +18,7 @@ import { RunnerStrip } from "@/components/loadout/runner-strip";
 import type { LoadoutSlotId, PickerItem } from "@/components/loadout/types";
 import { calculateLoadoutValue, formatCredits } from "@/components/loadout/loadout-utils";
 import { WeaponLoadoutCard } from "@/components/loadout/weapon-loadout-card";
+import { getCoreImageUrl, getImplantSlotIcon, getItemImageUrl, getModImageUrl } from "@/lib/gear-images";
 import { getCoreById, cores } from "@/data/cores";
 import { getImplantById, implants } from "@/data/implants";
 import { getItemById, items } from "@/data/items";
@@ -124,6 +125,7 @@ export function LoadoutBuilder({
           name: entry.name,
           subtitle: entry.description,
           rarity: entry.rarity,
+          imageUrl: getCoreImageUrl(entry.runnerId),
           icon: <Cpu className="h-8 w-8" />,
         }));
       case "primary-weapon":
@@ -142,6 +144,7 @@ export function LoadoutBuilder({
             name: entry.name,
             subtitle: entry.description,
             rarity: entry.rarity,
+            imageUrl: entry.imageUrl ?? getItemImageUrl(entry.id),
             icon: <GearTypeIcon type="backpack" className="h-8 w-8" />,
           }));
       case "equipment":
@@ -152,6 +155,7 @@ export function LoadoutBuilder({
             name: entry.name,
             subtitle: entry.description,
             rarity: entry.rarity,
+            imageUrl: entry.imageUrl ?? getItemImageUrl(entry.id),
             icon: <GearTypeIcon type="equipment" className="h-8 w-8" />,
           }));
       case "mods":
@@ -160,6 +164,7 @@ export function LoadoutBuilder({
           name: entry.name,
           subtitle: entry.slot,
           rarity: entry.rarity,
+          imageUrl: getModImageUrl(entry.id),
           icon: <GearTypeIcon type="mod" className="h-8 w-8" />,
         }));
       default:
@@ -172,6 +177,7 @@ export function LoadoutBuilder({
               name: entry.name,
               subtitle: entry.family,
               rarity: entry.rarity,
+              imageUrl: getImplantSlotIcon(implantSlot),
               icon: <ImplantSlotIcon slot={implantSlot} className="h-8 w-8" />,
             }));
         }
