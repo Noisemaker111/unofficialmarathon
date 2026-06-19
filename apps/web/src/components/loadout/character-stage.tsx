@@ -4,12 +4,11 @@ import { cn } from "@unofficialmarathon/ui/lib/utils";
 
 interface CharacterStageProps {
   runner?: Runner;
-  onSelectShell?: () => void;
   className?: string;
 }
 
 export function CharacterStage({ runner, className }: CharacterStageProps) {
-  const portrait = runner?.imageUrl ? getRunnerPortraitUrl(runner.imageUrl, 800) : undefined;
+  const render = runner?.renderUrl ?? (runner?.imageUrl ? getRunnerPortraitUrl(runner.imageUrl, 800) : undefined);
   const seasonNum = runner?.season ?? 1;
 
   return (
@@ -25,9 +24,9 @@ export function CharacterStage({ runner, className }: CharacterStageProps) {
       {/* Subtle vignette */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,black_85%)]" />
 
-      {portrait ? (
+      {render ? (
         <img
-          src={portrait}
+          src={render}
           alt={runner?.name ?? "Runner"}
           className="relative z-10 h-[min(58vh,520px)] w-auto max-w-full object-contain object-bottom drop-shadow-[0_12px_60px_rgba(112,0,255,0.25)]"
         />

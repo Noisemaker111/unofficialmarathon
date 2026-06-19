@@ -1,6 +1,8 @@
 // Weapon data for the 2026 Marathon extraction shooter
 // Source: https://marathonthegame.fandom.com/wiki/Weapons
 
+import { weaponAssets } from "@/data/weapon-assets";
+
 export type WeaponCategory =
   | "assault_rifle"
   | "machine_gun"
@@ -33,14 +35,6 @@ export interface Weapon {
   wikiUrl: string;
 }
 
-export function getWeaponById(id: string): Weapon | undefined {
-  return weapons.find((weapon) => weapon.id === id);
-}
-
-export function getWeaponsByCategory(category: WeaponCategory): Weapon[] {
-  return weapons.filter((weapon) => weapon.category === category);
-}
-
 export function getCompatibleMods(weaponId: string, modList: { id: string; compatibleWeaponIds: string[] }[]) {
   return modList.filter((mod) => mod.compatibleWeaponIds.includes(weaponId));
 }
@@ -57,7 +51,7 @@ export const weaponCategories: { value: WeaponCategory; label: string }[] = [
   { value: "melee", label: "Melee" },
 ];
 
-export const weapons: Weapon[] = [
+const weaponSeed: Weapon[] = [
   // Assault Rifles
   { id: "impact-h-ar", name: "Impact H-AR", category: "assault_rifle", description: "Heavy assault rifle with reinforced frame and high-caliber firing system.", firepower: "28.8", accuracy: "48.5", handling: "41", range: "60M", magazine: "18", zoom: "1.2X", ammoType: "Heavy Rounds", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/9/9a/Impact_HAR.png/revision/latest?cb=20260109230121", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/Impact_H-AR" },
   { id: "m77-assault-rifle", name: "M77 Assault Rifle", category: "assault_rifle", description: "Press: Toggle the built-in flip scope for high precision.", firepower: "24.0", accuracy: "59.3", handling: "38", range: "46M", magazine: "24", zoom: "1.2X", ammoType: "Light Rounds", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/1/1f/M77_Assault_Rifle.png/revision/latest?cb=20260109230157", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/M77_Assault_Rifle" },
@@ -105,6 +99,19 @@ export const weapons: Weapon[] = [
   // Melee
   { id: "v11-punch", name: "V11 Punch", category: "melee", description: "Volt-actuated melee weapon. Tap for quick strikes or hold to build and release a high-damage burst.", firepower: "37.5", accuracy: "36.0", handling: "49", range: "Melee", magazine: "4.5%", zoom: "—", ammoType: "Volt Battery", special: "Charge-up burst melee", imageUrl: "https://static.wikia.nocookie.net/marathonthegame/images/2/2b/V11_Punch.png/revision/latest?cb=20260109230924", wikiUrl: "https://marathonthegame.fandom.com/wiki/Weapons/V11_Punch" },
 ];
+
+export const weapons: Weapon[] = weaponSeed.map((weapon) => ({
+  ...weapon,
+  imageUrl: weaponAssets[weapon.id] ?? weapon.imageUrl,
+}));
+
+export function getWeaponById(id: string): Weapon | undefined {
+  return weapons.find((weapon) => weapon.id === id);
+}
+
+export function getWeaponsByCategory(category: WeaponCategory): Weapon[] {
+  return weapons.filter((weapon) => weapon.category === category);
+}
 
 export const ammoTypes: { value: AmmoType; label: string }[] = [
   { value: "Light Rounds", label: "Light Rounds" },

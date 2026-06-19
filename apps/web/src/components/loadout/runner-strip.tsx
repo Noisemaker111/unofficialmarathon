@@ -1,4 +1,3 @@
-import { getRunnerPortraitUrl } from "@/components/loadout/loadout-utils";
 import type { Runner } from "@/data/runners";
 import { cn } from "@unofficialmarathon/ui/lib/utils";
 
@@ -14,7 +13,7 @@ export function RunnerStrip({ runners, selectedId, onSelect }: RunnerStripProps)
       <div className="flex min-w-max gap-2">
         {runners.map((entry) => {
           const selected = selectedId === entry.id;
-          const portrait = entry.imageUrl ? getRunnerPortraitUrl(entry.imageUrl, 400) : undefined;
+          const portrait = entry.imageUrl;
 
           return (
             <button

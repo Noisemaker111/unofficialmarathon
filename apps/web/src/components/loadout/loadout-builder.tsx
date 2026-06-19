@@ -115,7 +115,7 @@ export function LoadoutBuilder({
           id: entry.id,
           name: entry.name,
           subtitle: entry.archetype,
-          imageUrl: entry.imageUrl || undefined,
+          imageUrl: entry.renderUrl || entry.imageUrl || undefined,
         }));
       case "core":
       case "core-secondary":

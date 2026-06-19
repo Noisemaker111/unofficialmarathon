@@ -1,6 +1,8 @@
 // Runner shell data for the 2026 Marathon extraction shooter
 // Source: https://marathonthegame.fandom.com/wiki/Runners
 
+import { runnerAssets as runnerAssetMap } from "@/data/runner-assets";
+
 export interface RunnerAbility {
   name: string;
   type: "prime" | "tactical" | "trait1" | "trait2";
@@ -25,12 +27,13 @@ export interface Runner {
   quote: string;
   abilities: RunnerAbility[];
   defaultStats: Record<string, number>;
-  imageUrl: string; // Runner card image URL
+  imageUrl: string; // Runner card portrait
+  renderUrl: string; // Full-body press kit render
   wikiUrl: string;
   season?: number;
 }
 
-export const runners: Runner[] = [
+const runnerSeed: Runner[] = [
   {
     id: "assassin",
     name: "Assassin",
@@ -47,7 +50,8 @@ export const runners: Runner[] = [
       { name: "Shroud", type: "trait2", description: "Your shell automatically activates its camouflage systems when entering any smoke field, making you invisible. Invisibility persists for a short time after leaving the smoke field." },
     ],
     defaultStats: { "Heat Capacity": 10, Agility: 20, "Loot Speed": 35, "Melee Damage": 10, "Prime Recovery": 10, "Tactical Recovery": 5, "Self-Repair Speed": 10, "Finisher Siphon": 10, "Revive Speed": 15, Hardware: 10, Firewall: 20, "Fall Resistance": 10, "Ping Duration": 10 },
-    imageUrl: "https://marathon.wiki.gallery/images/thumb/6/63/Assassin_runner_card.jpg/400px-Assassin_runner_card.jpg",
+    imageUrl: "https://marathon.wiki.gallery/images/6/63/Assassin_runner_card.jpg",
+    renderUrl: "https://marathon.wiki.gallery/images/0/0a/2026_Marathon_Weaponless_Press_Kit_Compressed_020.jpg",
     wikiUrl: "https://marathonthegame.fandom.com/wiki/Runners/Shadow_Agent",
   },
   {
@@ -66,7 +70,8 @@ export const runners: Runner[] = [
       { name: "Tactical Sprint", type: "trait2", description: "Double-press sprint to move faster at the cost of generating additional heat." },
     ],
     defaultStats: { "Heat Capacity": 15, Agility: 10, "Loot Speed": 25, "Melee Damage": 15, "Prime Recovery": 5, "Tactical Recovery": 10, "Self-Repair Speed": 15, "Finisher Siphon": 10, "Revive Speed": 10, Hardware: 25, Firewall: 20, "Fall Resistance": 5, "Ping Duration": 5 },
-    imageUrl: "https://marathon.wiki.gallery/images/thumb/a/a5/Destroyer_runner_card.jpg/400px-Destroyer_runner_card.jpg",
+    imageUrl: "https://marathon.wiki.gallery/images/a/a5/Destroyer_runner_card.jpg",
+    renderUrl: "https://marathon.wiki.gallery/images/8/8c/2026_Marathon_Weaponless_Press_Kit_Compressed_016.jpg",
     wikiUrl: "https://marathonthegame.fandom.com/wiki/Runners/Combat_Specialist",
   },
   {
@@ -85,7 +90,8 @@ export const runners: Runner[] = [
       { name: "Power Slide", type: "trait2", description: "Grants a supercharged slide that generates additional heat." },
     ],
     defaultStats: { "Heat Capacity": 25, Agility: 30, "Loot Speed": 25, "Melee Damage": 5, "Prime Recovery": 10, "Tactical Recovery": 5, "Self-Repair Speed": 5, "Finisher Siphon": 10, "Revive Speed": 5, Hardware: 10, Firewall: 5, "Fall Resistance": 10, "Ping Duration": 5 },
-    imageUrl: "https://marathon.wiki.gallery/images/thumb/c/c2/Vandal_runner_card.jpg/400px-Vandal_runner_card.jpg",
+    imageUrl: "https://marathon.wiki.gallery/images/c/c2/Vandal_runner_card.jpg",
+    renderUrl: "https://marathon.wiki.gallery/images/c/c3/2026_Marathon_Weaponless_Press_Kit_Compressed_017.jpg",
     wikiUrl: "https://marathonthegame.fandom.com/wiki/Runners/Combat_Anarchist",
   },
   {
@@ -104,7 +110,8 @@ export const runners: Runner[] = [
       { name: "Battery Overcharge", type: "trait2", description: "Divert energy from your cooling systems to boost the performance of your weapons at the cost of generating additional heat. While active, breaking a target's shield with a volt weapon EMPs them." },
     ],
     defaultStats: { "Heat Capacity": 10, Agility: 10, "Loot Speed": 30, "Melee Damage": 5, "Prime Recovery": 10, "Tactical Recovery": 5, "Self-Repair Speed": 15, "Finisher Siphon": 5, "Revive Speed": 20, Hardware: 15, Firewall: 5, "Fall Resistance": 5, "Ping Duration": 15 },
-    imageUrl: "https://marathon.wiki.gallery/images/thumb/a/af/Triage_runner_card.jpg/400px-Triage_runner_card.jpg",
+    imageUrl: "https://marathon.wiki.gallery/images/a/af/Triage_runner_card.jpg",
+    renderUrl: "https://marathon.wiki.gallery/images/8/87/2026_Marathon_Weaponless_Press_Kit_Compressed_018.jpg",
     wikiUrl: "https://marathonthegame.fandom.com/wiki/Runners/Field_Medic",
   },
   {
@@ -123,7 +130,8 @@ export const runners: Runner[] = [
       { name: "Stalker Protocol", type: "trait2", description: "After breaking a hostile's shield, a lingering holographic trail is left behind for a short time." },
     ],
     defaultStats: { "Heat Capacity": 20, Agility: 15, "Loot Speed": 10, "Melee Damage": 5, "Prime Recovery": 5, "Tactical Recovery": 10, "Self-Repair Speed": 5, "Finisher Siphon": 25, "Revive Speed": 10, Hardware: 10, Firewall: 15, "Fall Resistance": 5, "Ping Duration": 25 },
-    imageUrl: "https://marathon.wiki.gallery/images/thumb/6/6e/Recon_runner_card.jpg/400px-Recon_runner_card.jpg",
+    imageUrl: "https://marathon.wiki.gallery/images/6/6e/Recon_runner_card.jpg",
+    renderUrl: "https://marathon.wiki.gallery/images/9/9e/2026_Marathon_Weaponless_Press_Kit_Compressed_019.jpg",
     wikiUrl: "https://marathonthegame.fandom.com/wiki/Runners/Intel_Specialist",
   },
   {
@@ -142,7 +150,8 @@ export const runners: Runner[] = [
       { name: "The Finer Things", type: "trait2", description: "Gain increased weapon handling and accelerated Grapple Device recharge rate based on the number of items in your Backpack." },
     ],
     defaultStats: { "Heat Capacity": 10, Agility: 20, "Loot Speed": 35, "Melee Damage": 10, "Prime Recovery": 10, "Tactical Recovery": 5, "Self-Repair Speed": 10, "Finisher Siphon": 10, "Revive Speed": 15, Hardware: 10, Firewall: 20, "Fall Resistance": 10, "Ping Duration": 10 },
-    imageUrl: "https://marathon.wiki.gallery/images/thumb/2/2e/Thief_runner_card.jpg/400px-Thief_runner_card.jpg",
+    imageUrl: "https://marathon.wiki.gallery/images/2/2e/Thief_runner_card.jpg",
+    renderUrl: "https://marathon.wiki.gallery/images/7/7c/2026_Marathon_Weaponless_Press_Kit_Compressed_021.jpg",
     wikiUrl: "https://marathonthegame.fandom.com/wiki/Runners/Covert_Acquisitions",
   },
   {
@@ -161,7 +170,8 @@ export const runners: Runner[] = [
       { name: "Self-Repair", type: "trait2", description: "Your shell automatically repairs damage over time." },
     ],
     defaultStats: { "Heat Capacity": 10, Agility: 20, "Loot Speed": 35, "Melee Damage": 10, "Prime Recovery": 10, "Tactical Recovery": 5, "Self-Repair Speed": 10, "Finisher Siphon": 10, "Revive Speed": 15, Hardware: 10, Firewall: 20, "Fall Resistance": 10, "Ping Duration": 10 },
-    imageUrl: "https://marathon.wiki.gallery/images/thumb/1/1b/Rook_runner_card.jpg/400px-Rook_runner_card.jpg",
+    imageUrl: "https://marathon.wiki.gallery/images/1/1b/Rook_runner_card.jpg",
+    renderUrl: "https://marathon.wiki.gallery/images/b/bb/Rook_Cinematic_1_Compressed.jpg",
     wikiUrl: "https://marathonthegame.fandom.com/wiki/Runners/Scavenger",
   },
   {
@@ -180,11 +190,22 @@ export const runners: Runner[] = [
       { name: "Castle Doctrine", type: "trait2", description: "You ready and reload SMGs, shotguns, and pistols more quickly based on nearby hostiles. Splash damage briefly boosts Hardware, Firewall, and Self-Repair Speed." },
     ],
     defaultStats: { "Heat Capacity": 5, Agility: 10, "Loot Speed": 10, "Melee Damage": 20, "Prime Recovery": 10, "Tactical Recovery": 15, "Self-Repair Speed": 15, "Finisher Siphon": 15, "Revive Speed": 5, Hardware: 20, Firewall: 20, "Fall Resistance": 5, "Ping Duration": 5 },
-    imageUrl: "https://www.marathonwiki.com/images/thumb/8/8f/Sentinel_card.png/400px-Sentinel_card.png",
+    imageUrl: "https://marathon.wiki.gallery/images/e/e4/Sentinel_runner_card.png",
+    renderUrl: "https://marathon.wiki.gallery/images/e/e4/Sentinel_runner_card.png",
     wikiUrl: "https://www.marathonwiki.com/Sentinel",
     season: 2,
   },
 ];
+
+export const runners: Runner[] = runnerSeed.map((runner) => {
+  const assets = runnerAssetMap[runner.id];
+  if (!assets) return runner;
+  return {
+    ...runner,
+    imageUrl: assets.card,
+    renderUrl: assets.render,
+  };
+});
 
 export function getRunnerById(id: string): Runner | undefined {
   return runners.find((runner) => runner.id === id);
