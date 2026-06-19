@@ -5,6 +5,7 @@ export interface LoadoutState {
   primaryWeaponId?: string;
   secondaryWeaponId?: string;
   coreId?: string;
+  secondaryCoreId?: string;
   implants: Partial<Record<ImplantSlot, string>>;
   modIds: string[];
   backpackId?: string;
@@ -39,6 +40,7 @@ export function normalizeLoadout(parsed: LoadoutState): LoadoutState {
     primaryWeaponId: parsed.primaryWeaponId,
     secondaryWeaponId: parsed.secondaryWeaponId,
     coreId: parsed.coreId,
+    secondaryCoreId: parsed.secondaryCoreId,
     backpackId: parsed.backpackId,
     equipmentId: parsed.equipmentId,
     label: parsed.label,
