@@ -22,10 +22,10 @@ export function RunnerStrip({ runners, selectedId, onSelect }: RunnerStripProps)
               type="button"
               onClick={() => onSelect(entry.id)}
               className={cn(
-                "group relative h-28 w-[88px] shrink-0 overflow-hidden border transition-all duration-200 marathon-hud-frame",
+                "group relative h-28 w-[88px] shrink-0 overflow-hidden border transition-all duration-200",
                 selected
-                  ? "border-primary shadow-[0_0_28px_oklch(0.88_0.23_120/30%)] ring-1 ring-primary/50"
-                  : "border-border/40 opacity-75 hover:border-primary/50 hover:opacity-100",
+                  ? "border-white shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+                  : "border-white/15 opacity-75 hover:border-white/35 hover:opacity-100",
               )}
             >
               {portrait ? (

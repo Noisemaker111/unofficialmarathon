@@ -101,14 +101,11 @@ function LoadoutBuilderPage() {
   const loadingCloud = Boolean(id) && cloudLoadout === undefined;
 
   return (
-    <div className="min-h-full bg-background marathon-lattice">
-      <div className="container mx-auto max-w-7xl px-3 py-6 sm:px-4 sm:py-8">
-        <div className="mb-6 border-b border-border/40 pb-4">
-          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-primary/60">Configure</p>
-          <h1 className="text-2xl font-black uppercase tracking-tight text-primary sm:text-3xl">Loadout Builder</h1>
-          <p className="mt-1 max-w-xl font-mono text-xs text-muted-foreground">
-            Plan your shell, weapons, cores, implants, and gear — then save or share your build.
-          </p>
+    <div className="min-h-full bg-black">
+      <div className="container mx-auto max-w-[1600px] px-2 py-4 sm:px-4 sm:py-6">
+        <div className="mb-4 border-b border-white/10 pb-4">
+          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/35">Shell Select</p>
+          <h1 className="font-serif text-3xl uppercase tracking-wide text-white sm:text-4xl">Loadout</h1>
         </div>
 
         {loadingCloud && (

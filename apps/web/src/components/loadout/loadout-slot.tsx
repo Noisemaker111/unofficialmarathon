@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Plus, X } from "lucide-react";
 
-import { rarityBorderClass, rarityGlowClass } from "@/components/loadout/loadout-utils";
+import { rarityBorderClass } from "@/components/loadout/loadout-utils";
 import { RarityBadge } from "@/components/database/rarity-badge";
 import type { Rarity } from "@/data/types";
 import { cn } from "@unofficialmarathon/ui/lib/utils";
@@ -54,7 +54,6 @@ export function LoadoutSlot({
         "group relative flex flex-col border bg-black/55 text-left transition-all marathon-hud-frame",
         sizeClasses[size],
         empty ? "border-border/45" : rarityBorderClass(rarity),
-        !empty && rarityGlowClass(rarity),
         active
           ? "border-primary shadow-[0_0_24px_oklch(0.88_0.23_120/22%)] ring-1 ring-primary/40"
           : "hover:border-primary/45 hover:bg-primary/5",

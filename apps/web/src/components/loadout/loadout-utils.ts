@@ -1,6 +1,11 @@
 import type { Rarity } from "@/data/types";
 import { rarityColors } from "@/data/types";
 import type { Runner } from "@/data/runners";
+import type { LoadoutState } from "@/lib/loadout";
+import { getCoreById } from "@/data/cores";
+import { getImplantById } from "@/data/implants";
+import { getItemById } from "@/data/items";
+import { getModById } from "@/data/mods";
 
 /** Upgrade wiki thumbnail URLs to a larger portrait size. */
 export function getRunnerPortraitUrl(url: string, size: 400 | 800 | 1200 = 800): string {
@@ -9,44 +14,80 @@ export function getRunnerPortraitUrl(url: string, size: 400 | 800 | 1200 = 800):
 }
 
 export function rarityBorderClass(rarity?: Rarity): string {
-  if (!rarity) return "border-border/50";
+  if (!rarity) return "border-white/10";
   const color = rarityColors[rarity];
   const border = color.split(" ").find((c) => c.startsWith("border-"));
-  return border ?? "border-border/50";
+  return border ?? "border-white/10";
 }
 
-export function rarityGlowClass(rarity?: Rarity): string {
+/** Top rarity bar on vault-style item tiles. */
+export function rarityBarClass(rarity?: Rarity): string {
   switch (rarity) {
     case "prestige":
-      return "shadow-[0_0_20px_oklch(0.82_0.15_75/35%)]";
-    case "superior":
-      return "shadow-[0_0_18px_oklch(0.65_0.2_300/30%)]";
-    case "deluxe":
-      return "shadow-[0_0_16px_oklch(0.7_0.15_230/28%)]";
-    case "enhanced":
-      return "shadow-[0_0_14px_oklch(0.72_0.17_155/25%)]";
+      return "bg-amber-500/90";
     case "contraband":
-      return "shadow-[0_0_20px_oklch(0.65_0.22_15/35%)]";
+      return "bg-rose-500/90";
+    case "superior":
+      return "bg-violet-500/90";
+    case "deluxe":
+      return "bg-sky-500/90";
+    case "enhanced":
+      return "bg-emerald-500/90";
     default:
-      return "";
+      return "bg-white/20";
   }
 }
 
-/** Key stats shown on the in-game runner card HUD. */
-export const runnerHudStats = [
-  { key: "Heat Capacity", label: "Heat", short: "HEAT" },
-  { key: "Agility", label: "Agil", short: "AGIL" },
-  { key: "Loot Speed", label: "Loot", short: "LOOT" },
-  { key: "Melee Damage", label: "Mele", short: "MELE" },
-  { key: "Prime Recovery", label: "Prim", short: "PRIM" },
-  { key: "Tactical Recovery", label: "Tact", short: "TACT" },
+export function formatCredits(value: number): string {
+  if (value >= 1000) return `${(value / 1000).toFixed(1).replace(/\.0$/, "")}k`;
+  return String(value);
+}
+
+export function calculateLoadoutValue(loadout: LoadoutState): number {
+  let total = 0;
+  const add = (price?: number) => {
+    if (price) total += price;
+  };
+
+  if (loadout.coreId) add(getCoreById(loadout.coreId)?.price);
+  if (loadout.secondaryCoreId) add(getCoreById(loadout.secondaryCoreId)?.price);
+
+  for (const id of Object.values(loadout.implants)) {
+    if (id) add(getImplantById(id)?.price);
+  }
+
+  if (loadout.backpackId) add(getItemById(loadout.backpackId)?.value);
+  if (loadout.equipmentId) add(getItemById(loadout.equipmentId)?.value);
+
+  for (const modId of loadout.modIds) {
+    add(getModById(modId)?.price);
+  }
+
+  return total;
+}
+
+/** All runner stats in loadout-menu order. */
+export const runnerStatOrder = [
+  "Heat Capacity",
+  "Agility",
+  "Loot Speed",
+  "Melee Damage",
+  "Prime Recovery",
+  "Tactical Recovery",
+  "Self-Repair Speed",
+  "Finisher Siphon",
+  "Revive Speed",
+  "Hardware",
+  "Firewall",
+  "Fall Resistance",
+  "Ping Duration",
 ] as const;
 
-export function getRunnerHudStats(runner?: Runner) {
+export function getRunnerStatList(runner?: Runner) {
   if (!runner) return [];
-  return runnerHudStats.map((stat) => ({
-    ...stat,
-    value: runner.defaultStats[stat.key] ?? 0,
+  return runnerStatOrder.map((key) => ({
+    key,
+    value: runner.defaultStats[key] ?? 0,
   }));
 }
 

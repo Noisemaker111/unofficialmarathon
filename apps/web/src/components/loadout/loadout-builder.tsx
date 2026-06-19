@@ -8,13 +8,16 @@ import {
   Share2,
 } from "lucide-react";
 
+import { BackpackPanel } from "@/components/loadout/backpack-panel";
 import { CharacterStage } from "@/components/loadout/character-stage";
+import { GearCluster } from "@/components/loadout/gear-cluster";
 import { ItemPicker } from "@/components/loadout/item-picker";
 import { GearTypeIcon, ImplantSlotIcon } from "@/components/loadout/item-icons";
-import { LoadoutSlot } from "@/components/loadout/loadout-slot";
+import { RunnerStatsPanel } from "@/components/loadout/runner-stats-panel";
 import { RunnerStrip } from "@/components/loadout/runner-strip";
 import type { LoadoutSlotId, PickerItem } from "@/components/loadout/types";
-import { WeaponSlotPanel } from "@/components/loadout/weapon-slot-panel";
+import { calculateLoadoutValue, formatCredits } from "@/components/loadout/loadout-utils";
+import { WeaponLoadoutCard } from "@/components/loadout/weapon-loadout-card";
 import { getCoreById, cores } from "@/data/cores";
 import { getImplantById, implants } from "@/data/implants";
 import { getItemById, items } from "@/data/items";
@@ -67,6 +70,7 @@ export function LoadoutBuilder({
 }: LoadoutBuilderProps) {
   const [activeSlot, setActiveSlot] = useState<LoadoutSlotId | null>(null);
   const [modWeaponContext, setModWeaponContext] = useState<"primary" | "secondary" | null>(null);
+  const [showShellPicker, setShowShellPicker] = useState(false);
 
   const runner = playableRunners.find((entry) => entry.id === loadout.runnerId);
   const primary = weapons.find((entry) => entry.id === loadout.primaryWeaponId);
@@ -76,6 +80,7 @@ export function LoadoutBuilder({
   const backpack = loadout.backpackId ? getItemById(loadout.backpackId) : undefined;
   const equipment = loadout.equipmentId ? getItemById(loadout.equipmentId) : undefined;
   const selectedMods = loadout.modIds.map((id) => getModById(id)).filter(Boolean);
+  const loadoutValue = calculateLoadoutValue(loadout);
 
   const compatibleCores = loadout.runnerId ? cores.filter((entry) => entry.runnerId === loadout.runnerId) : cores;
 
@@ -95,10 +100,16 @@ export function LoadoutBuilder({
     ? selectedMods.filter((mod) => mod && mod.compatibleWeaponIds.includes(secondary.id))
     : [];
 
-  const pickerItems = useMemo((): PickerItem[] => {
-    if (!activeSlot) return [];
+  const getImplant = (slot: ImplantSlot) => {
+    const id = loadout.implants[slot];
+    return id ? getImplantById(id) : undefined;
+  };
 
-    switch (activeSlot) {
+  const pickerItems = useMemo((): PickerItem[] => {
+    const slot = showShellPicker ? "runner" : activeSlot;
+    if (!slot) return [];
+
+    switch (slot) {
       case "runner":
         return playableRunners.map((entry) => ({
           id: entry.id,
@@ -152,33 +163,41 @@ export function LoadoutBuilder({
           icon: <GearTypeIcon type="mod" className="h-8 w-8" />,
         }));
       default:
-        if (activeSlot.startsWith("implant-")) {
-          const slot = activeSlot.replace("implant-", "") as ImplantSlot;
+        if (slot.startsWith("implant-")) {
+          const implantSlot = slot.replace("implant-", "") as ImplantSlot;
           return implants
-            .filter((entry) => entry.slot === slot)
+            .filter((entry) => entry.slot === implantSlot)
             .map((entry) => ({
               id: entry.id,
               name: entry.name,
               subtitle: entry.family,
               rarity: entry.rarity,
-              icon: <ImplantSlotIcon slot={slot} className="h-8 w-8" />,
+              icon: <ImplantSlotIcon slot={implantSlot} className="h-8 w-8" />,
             }));
         }
         return [];
     }
-  }, [activeSlot, compatibleCores, compatibleMods]);
+  }, [activeSlot, showShellPicker, compatibleCores, compatibleMods]);
 
   const openModsForWeapon = (context: "primary" | "secondary") => {
     setModWeaponContext(context);
+    setShowShellPicker(false);
     setActiveSlot("mods");
   };
 
-  const handleSelect = (id: string) => {
-    if (!activeSlot) return;
+  const openSlot = (slot: LoadoutSlotId) => {
+    setShowShellPicker(false);
+    setActiveSlot(slot);
+  };
 
-    switch (activeSlot) {
+  const handleSelect = (id: string) => {
+    const slot = showShellPicker ? "runner" : activeSlot;
+    if (!slot) return;
+
+    switch (slot) {
       case "runner":
         onChange({ runnerId: id, coreId: undefined, secondaryCoreId: undefined });
+        setShowShellPicker(false);
         break;
       case "core":
         onChange({ coreId: id });
@@ -206,291 +225,181 @@ export function LoadoutBuilder({
         return;
       }
       default:
-        if (activeSlot.startsWith("implant-")) {
-          const slot = activeSlot.replace("implant-", "") as ImplantSlot;
-          onChange({ implants: { ...loadout.implants, [slot]: id } });
+        if (slot.startsWith("implant-")) {
+          const implantSlot = slot.replace("implant-", "") as ImplantSlot;
+          onChange({ implants: { ...loadout.implants, [implantSlot]: id } });
         }
     }
-    setActiveSlot(null);
+    closePicker();
   };
 
   const closePicker = () => {
     setActiveSlot(null);
     setModWeaponContext(null);
+    setShowShellPicker(false);
   };
 
-  const clearSlot = (slot: LoadoutSlotId) => {
-    switch (slot) {
-      case "runner":
-        onChange({ runnerId: undefined, coreId: undefined, secondaryCoreId: undefined });
-        break;
-      case "core":
-        onChange({ coreId: undefined });
-        break;
-      case "core-secondary":
-        onChange({ secondaryCoreId: undefined });
-        break;
-      case "primary-weapon":
-        onChange({ primaryWeaponId: undefined });
-        break;
-      case "secondary-weapon":
-        onChange({ secondaryWeaponId: undefined });
-        break;
-      case "backpack":
-        onChange({ backpackId: undefined });
-        break;
-      case "equipment":
-        onChange({ equipmentId: undefined });
-        break;
-      case "mods":
-        onChange({ modIds: [] });
-        break;
-      default:
-        if (slot.startsWith("implant-")) {
-          const implantSlot = slot.replace("implant-", "") as ImplantSlot;
-          const next = { ...loadout.implants };
-          delete next[implantSlot];
-          onChange({ implants: next });
-        }
-    }
-  };
-
-  const getImplant = (slot: ImplantSlot) => {
-    const id = loadout.implants[slot];
-    return id ? getImplantById(id) : undefined;
-  };
+  const pickerOpen = Boolean(activeSlot || showShellPicker);
+  const currentSlot = showShellPicker ? "runner" : activeSlot;
 
   const pickerSelectedId =
-    activeSlot === "runner" ? loadout.runnerId
-    : activeSlot === "core" ? loadout.coreId
-    : activeSlot === "core-secondary" ? loadout.secondaryCoreId
-    : activeSlot === "primary-weapon" ? loadout.primaryWeaponId
-    : activeSlot === "secondary-weapon" ? loadout.secondaryWeaponId
-    : activeSlot === "backpack" ? loadout.backpackId
-    : activeSlot === "equipment" ? loadout.equipmentId
-    : activeSlot?.startsWith("implant-")
-      ? loadout.implants[activeSlot.replace("implant-", "") as ImplantSlot]
+    currentSlot === "runner" ? loadout.runnerId
+    : currentSlot === "core" ? loadout.coreId
+    : currentSlot === "core-secondary" ? loadout.secondaryCoreId
+    : currentSlot === "primary-weapon" ? loadout.primaryWeaponId
+    : currentSlot === "secondary-weapon" ? loadout.secondaryWeaponId
+    : currentSlot === "backpack" ? loadout.backpackId
+    : currentSlot === "equipment" ? loadout.equipmentId
+    : currentSlot?.startsWith("implant-")
+      ? loadout.implants[currentSlot.replace("implant-", "") as ImplantSlot]
       : undefined;
 
   const pickerTitle =
-    activeSlot === "mods" && modWeaponContext
-      ? `${slotTitles.mods} — ${modWeaponContext === "primary" ? "Primary" : "Secondary"}`
-      : activeSlot
-        ? slotTitles[activeSlot]
-        : "";
+    currentSlot === "mods" && modWeaponContext
+      ? `${slotTitles.mods} — ${modWeaponContext === "primary" ? "Weapon 1" : "Weapon 2"}`
+      : currentSlot
+        ? slotTitles[currentSlot]
+        : "Vault";
 
   return (
-    <div className="space-y-4">
-      {/* Toolbar */}
-      <div className="flex flex-col gap-3 border border-border/40 bg-black/40 p-3 sm:flex-row sm:items-center sm:justify-between marathon-hud-frame">
+    <div className="space-y-0 bg-black text-white">
+      {/* Top bar — matches in-game header */}
+      <div className="flex flex-col gap-3 border-b border-white/10 px-1 py-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <button
+            type="button"
+            onClick={() => {
+              setShowShellPicker(true);
+              setActiveSlot(null);
+            }}
+            className="text-left"
+          >
+            <h2 className="font-serif text-4xl font-normal uppercase tracking-wide text-white sm:text-5xl">
+              {runner?.name ?? "Select Shell"}
+            </h2>
+          </button>
+          {runner ? (
+            <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-white/40">{runner.archetype}</p>
+          ) : null}
+        </div>
+        <div className="text-left sm:text-right">
+          <p className="font-mono text-[10px] uppercase tracking-wider text-white/40">Loadout Value</p>
+          <p className="font-mono text-2xl font-medium tabular-nums text-white">
+            {formatCredits(loadoutValue)}
+            <span className="ml-1 text-sm text-white/40">¢</span>
+          </p>
+        </div>
+      </div>
+
+      {/* Actions row */}
+      <div className="flex flex-wrap items-center gap-2 border-b border-white/10 py-3">
         <Input
           value={label}
           onChange={(event) => onLabelChange(event.target.value)}
           placeholder="Build name"
-          className="max-w-md rounded-none border-border/50 bg-background/80 font-mono uppercase"
+          className="max-w-[200px] rounded-none border-white/15 bg-black font-mono text-xs uppercase"
         />
-        <div className="flex flex-wrap gap-2">
-          <Button type="button" size="sm" className="rounded-none font-mono uppercase" onClick={onSave} disabled={saving}>
-            {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
-            Save
-          </Button>
-          <Button type="button" variant="outline" size="sm" className="rounded-none font-mono uppercase" onClick={onShare}>
-            <Share2 className="mr-2 h-4 w-4" /> Share
-          </Button>
-          <Button type="button" variant="outline" size="sm" className="rounded-none font-mono uppercase" onClick={onCopyCode}>
-            <Copy className="mr-2 h-4 w-4" /> Code
-          </Button>
-        </div>
+        <Button type="button" size="sm" variant="outline" className="rounded-none border-white/20 bg-transparent font-mono text-xs uppercase hover:bg-white/5" onClick={onSave} disabled={saving}>
+          {saving ? <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" /> : <Save className="mr-2 h-3.5 w-3.5" />}
+          Save
+        </Button>
+        <Button type="button" size="sm" variant="outline" className="rounded-none border-white/20 bg-transparent font-mono text-xs uppercase hover:bg-white/5" onClick={onShare}>
+          <Share2 className="mr-2 h-3.5 w-3.5" /> Share
+        </Button>
+        <Button type="button" size="sm" variant="outline" className="rounded-none border-white/20 bg-transparent font-mono text-xs uppercase hover:bg-white/5" onClick={onCopyCode}>
+          <Copy className="mr-2 h-3.5 w-3.5" /> Code
+        </Button>
         {cloudId ? (
-          <p className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-primary sm:ml-auto">
+          <span className="ml-auto flex items-center gap-1 font-mono text-[9px] uppercase tracking-widest text-white/35">
             <Cloud className="h-3 w-3" /> {cloudId}
-          </p>
+          </span>
         ) : null}
       </div>
 
-      <div className="border border-border/30 bg-black/25 px-3 py-2 marathon-hud-frame">
-        <p className="mb-2 font-mono text-[9px] uppercase tracking-[0.25em] text-primary/70">Select Runner</p>
-        <RunnerStrip
-          runners={playableRunners}
-          selectedId={loadout.runnerId}
-          onSelect={(id) => onChange({ runnerId: id, coreId: undefined, secondaryCoreId: undefined })}
-        />
-      </div>
-
-      <div className="grid gap-4 xl:grid-cols-[1fr_340px]">
-        {/* Main rig */}
-        <div className="space-y-3">
-          <div className="grid gap-3 lg:grid-cols-[112px_1fr_112px]">
-            {/* Weapons column */}
-            <div className="flex flex-col gap-3 lg:col-start-1">
-              <WeaponSlotPanel
-                slotCode="WPN_01"
-                label="Primary"
-                weapon={primary}
-                mods={primaryMods}
-                active={activeSlot === "primary-weapon"}
-                modActive={activeSlot === "mods" && modWeaponContext === "primary"}
-                onClick={() => setActiveSlot("primary-weapon")}
-                onModClick={() => openModsForWeapon("primary")}
-                onClear={() => clearSlot("primary-weapon")}
-              />
-              <WeaponSlotPanel
-                slotCode="WPN_02"
-                label="Secondary"
-                weapon={secondary}
-                mods={secondaryMods}
-                active={activeSlot === "secondary-weapon"}
-                modActive={activeSlot === "mods" && modWeaponContext === "secondary"}
-                onClick={() => setActiveSlot("secondary-weapon")}
-                onModClick={() => openModsForWeapon("secondary")}
-                onClear={() => clearSlot("secondary-weapon")}
-              />
-            </div>
-
-            {/* Character */}
-            <div className="lg:col-start-2">
-              <CharacterStage runner={runner} />
-            </div>
-
-            {/* Implants + cores column */}
-            <div className="grid grid-cols-2 gap-2 lg:col-start-3 lg:grid-cols-1 lg:gap-1.5">
-              <LoadoutSlot
-                slotCode="HEAD"
-                label="Head"
-                active={activeSlot === "implant-head"}
-                empty={!getImplant("head")}
-                name={getImplant("head")?.name}
-                rarity={getImplant("head")?.rarity}
-                icon={<ImplantSlotIcon slot="head" className="h-5 w-5" />}
-                onClick={() => setActiveSlot("implant-head")}
-                onClear={() => clearSlot("implant-head")}
-                size="implant"
-              />
-              <LoadoutSlot
-                slotCode="TORSO"
-                label="Torso"
-                active={activeSlot === "implant-torso"}
-                empty={!getImplant("torso")}
-                name={getImplant("torso")?.name}
-                rarity={getImplant("torso")?.rarity}
-                icon={<ImplantSlotIcon slot="torso" className="h-5 w-5" />}
-                onClick={() => setActiveSlot("implant-torso")}
-                onClear={() => clearSlot("implant-torso")}
-                size="implant"
-              />
-              <LoadoutSlot
-                slotCode="LEGS"
-                label="Legs"
-                active={activeSlot === "implant-legs"}
-                empty={!getImplant("legs")}
-                name={getImplant("legs")?.name}
-                rarity={getImplant("legs")?.rarity}
-                icon={<ImplantSlotIcon slot="legs" className="h-5 w-5" />}
-                onClick={() => setActiveSlot("implant-legs")}
-                onClear={() => clearSlot("implant-legs")}
-                size="implant"
-              />
-              <LoadoutSlot
-                slotCode="SHIELD"
-                label="Shield"
-                active={activeSlot === "implant-shield"}
-                empty={!getImplant("shield")}
-                name={getImplant("shield")?.name}
-                rarity={getImplant("shield")?.rarity}
-                icon={<ImplantSlotIcon slot="shield" className="h-5 w-5" />}
-                onClick={() => setActiveSlot("implant-shield")}
-                onClear={() => clearSlot("implant-shield")}
-                size="implant"
-              />
-              <LoadoutSlot
-                slotCode="CORE_01"
-                label="Core"
-                active={activeSlot === "core"}
-                empty={!core}
-                name={core?.name}
-                rarity={core?.rarity}
-                icon={<Cpu className="h-5 w-5" />}
-                onClick={() => setActiveSlot("core")}
-                onClear={() => clearSlot("core")}
-                size="core"
-              />
-              <LoadoutSlot
-                slotCode="CORE_02"
-                label="Core"
-                active={activeSlot === "core-secondary"}
-                empty={!secondaryCore}
-                name={secondaryCore?.name}
-                rarity={secondaryCore?.rarity}
-                icon={<Cpu className="h-5 w-5" />}
-                onClick={() => setActiveSlot("core-secondary")}
-                onClear={() => clearSlot("core-secondary")}
-                size="core"
-              />
-            </div>
-          </div>
-
-          {/* Bottom gear */}
-          <div className="grid gap-2 sm:grid-cols-2">
-            <LoadoutSlot
-              slotCode="EQUIP"
-              label="Equipment"
-              active={activeSlot === "equipment"}
-              empty={!equipment}
-              name={equipment?.name}
-              rarity={equipment?.rarity}
-              icon={<GearTypeIcon type="equipment" className="h-6 w-6" />}
-              onClick={() => setActiveSlot("equipment")}
-              onClear={() => clearSlot("equipment")}
-              size="gear"
-            />
-            <LoadoutSlot
-              slotCode="PACK"
-              label="Backpack"
-              active={activeSlot === "backpack"}
-              empty={!backpack}
-              name={backpack?.name}
-              rarity={backpack?.rarity}
-              icon={<GearTypeIcon type="backpack" className="h-6 w-6" />}
-              onClick={() => setActiveSlot("backpack")}
-              onClear={() => clearSlot("backpack")}
-              size="gear"
-            />
-          </div>
-        </div>
-
-        {/* Desktop picker sidebar */}
-        <div className="hidden min-h-[420px] xl:block xl:sticky xl:top-4 xl:h-[calc(100vh-8rem)]">
-          {activeSlot ? (
-            <ItemPicker
-              title={pickerTitle}
-              items={pickerItems}
-              selectedId={pickerSelectedId}
-              selectedIds={activeSlot === "mods" ? loadout.modIds : undefined}
-              multi={activeSlot === "mods"}
-              onSelect={handleSelect}
-              onClose={closePicker}
-            />
-          ) : (
-            <div className="flex h-full flex-col items-center justify-center border border-dashed border-border/40 bg-black/20 p-6 text-center marathon-hud-frame">
-              <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Configure Loadout</p>
-              <p className="mt-2 max-w-[220px] font-mono text-[10px] leading-relaxed text-muted-foreground/70">
-                Click any slot on the rig to browse gear with previews and rarity filters
-              </p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Mobile picker overlay */}
-      {activeSlot ? (
-        <div className="fixed inset-0 z-50 flex flex-col xl:hidden">
-          <button
-            type="button"
-            className="absolute inset-0 bg-black/75 backdrop-blur-sm"
-            onClick={closePicker}
-            aria-label="Close picker"
+      <div className="grid gap-px bg-white/10 lg:grid-cols-[180px_1fr_280px_200px] xl:grid-cols-[200px_minmax(280px,1fr)_minmax(300px,360px)_220px]">
+        {/* Left — stats */}
+        <div className="bg-black p-4">
+          <RunnerStatsPanel
+            runner={runner}
+            onSelectShell={() => {
+              setShowShellPicker(true);
+              setActiveSlot(null);
+            }}
           />
-          <div className={cn("relative mt-auto flex max-h-[88vh] flex-col px-2 pb-4 pt-2")}>
+        </div>
+
+        {/* Center — character */}
+        <div className="bg-black">
+          <CharacterStage runner={runner} />
+        </div>
+
+        {/* Center-right — weapons + gear */}
+        <div className="flex flex-col gap-4 bg-black p-4">
+          <WeaponLoadoutCard
+            index={1}
+            weapon={primary}
+            mods={primaryMods}
+            active={activeSlot === "primary-weapon"}
+            isActiveWeapon
+            modSlotActive={activeSlot === "mods" && modWeaponContext === "primary"}
+            onWeaponClick={() => openSlot("primary-weapon")}
+            onModClick={() => openModsForWeapon("primary")}
+          />
+          <WeaponLoadoutCard
+            index={2}
+            weapon={secondary}
+            mods={secondaryMods}
+            active={activeSlot === "secondary-weapon"}
+            modSlotActive={activeSlot === "mods" && modWeaponContext === "secondary"}
+            onWeaponClick={() => openSlot("secondary-weapon")}
+            onModClick={() => openModsForWeapon("secondary")}
+          />
+          <GearCluster
+            equipment={equipment}
+            core={core}
+            secondaryCore={secondaryCore}
+            implants={{
+              head: getImplant("head"),
+              torso: getImplant("torso"),
+              legs: getImplant("legs"),
+            }}
+            activeSlot={activeSlot ?? undefined}
+            onEquipmentClick={() => openSlot("equipment")}
+            onCoreClick={() => openSlot("core")}
+            onSecondaryCoreClick={() => openSlot("core-secondary")}
+            onImplantClick={(slot) => openSlot(`implant-${slot}`)}
+          />
+        </div>
+
+        {/* Right — backpack + shield */}
+        <div className="bg-black p-4">
+          <BackpackPanel
+            backpack={backpack}
+            shield={getImplant("shield")}
+            activeSlot={activeSlot ?? undefined}
+            onBackpackClick={() => openSlot("backpack")}
+            onShieldClick={() => openSlot("implant-shield")}
+          />
+        </div>
+      </div>
+
+      {/* Vault / picker — desktop */}
+      <div className="mt-px hidden border-t border-white/10 bg-black xl:block">
+        {pickerOpen ? (
+          <div className="h-[340px]">
+            {showShellPicker ? (
+              <div className="border-b border-white/10 p-3">
+                <p className="mb-2 font-mono text-[10px] uppercase tracking-wider text-white/40">Shell Select</p>
+                <RunnerStrip
+                  runners={playableRunners}
+                  selectedId={loadout.runnerId}
+                  onSelect={(id) => {
+                    onChange({ runnerId: id, coreId: undefined, secondaryCoreId: undefined });
+                    setShowShellPicker(false);
+                  }}
+                />
+              </div>
+            ) : null}
             <ItemPicker
               title={pickerTitle}
               items={pickerItems}
@@ -499,6 +408,44 @@ export function LoadoutBuilder({
               multi={activeSlot === "mods"}
               onSelect={handleSelect}
               onClose={closePicker}
+              vaultStyle
+            />
+          </div>
+        ) : (
+          <div className="flex h-24 items-center justify-center">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-white/20">
+              Click any slot to open the vault
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Mobile picker */}
+      {pickerOpen ? (
+        <div className="fixed inset-0 z-50 flex flex-col xl:hidden">
+          <button type="button" className="absolute inset-0 bg-black/85" onClick={closePicker} aria-label="Close" />
+          <div className="relative mt-auto flex max-h-[90vh] flex-col bg-black px-2 pb-4 pt-2">
+            {showShellPicker ? (
+              <div className="mb-2 border border-white/10 p-3">
+                <RunnerStrip
+                  runners={playableRunners}
+                  selectedId={loadout.runnerId}
+                  onSelect={(id) => {
+                    onChange({ runnerId: id, coreId: undefined, secondaryCoreId: undefined });
+                    setShowShellPicker(false);
+                  }}
+                />
+              </div>
+            ) : null}
+            <ItemPicker
+              title={pickerTitle}
+              items={pickerItems}
+              selectedId={pickerSelectedId}
+              selectedIds={activeSlot === "mods" ? loadout.modIds : undefined}
+              multi={activeSlot === "mods"}
+              onSelect={handleSelect}
+              onClose={closePicker}
+              vaultStyle
             />
           </div>
         </div>
